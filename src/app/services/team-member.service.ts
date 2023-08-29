@@ -13,16 +13,16 @@ export class TeamMemberService {
     localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
   }
 
-  editTeamMember(id: string, name: string, personalVolume: number, selectedParentId?: string) {
+  editTeamMember(id: string, name: string, personalVolume: number, parentId?: string) {
     const teamMembers = this.getTeamMembers();
     const teamMember = teamMembers.find(x => x.id === id);
     if (teamMember) {
       teamMember.name = name;
       teamMember.personalVolume = personalVolume;
-      teamMember.parentId = selectedParentId;
-    }
+      teamMember.parentId = parentId;
 
-    localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+      localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+    }
   }
 
   getTeamMembers() {
@@ -35,19 +35,26 @@ export class TeamMemberService {
   }
 
   private deleteChildren(treeNode: TreeNode) {
-    const teamMembers = this.getTeamMembers();
     const children = treeNode.children as TreeNode[];
-    children.forEach(child => {
-      if (child.children && child.children.length > 0) {
-        this.deleteChildren(child);
-      }
-    });
+    if (children?.length) {
+      children.forEach(child => {
+        if (child.children && child.children.length) {
+          this.deleteChildren(child);
+        } else {
+          this.deleteTreeNode(child);
+        }
+      });
+    }
 
+    this.deleteTreeNode(treeNode);
+  }
+
+  private deleteTreeNode(treeNode: TreeNode) {
+    const teamMembers = this.getTeamMembers();
     const teamMember = teamMembers.find(x => x.id === treeNode.data.id);
     if (teamMember) {
       teamMembers.splice(teamMembers.indexOf(teamMember), 1);
+      localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
     }
-
-    localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
   }
 }
