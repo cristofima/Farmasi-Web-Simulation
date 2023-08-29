@@ -1,0 +1,49 @@
+<br />
+
+<p-card header="Compras y Ventas">
+  <p class="m-0">
+    <b>Volumen Personal (VP):</b> {{personalVolume}}
+  </p>
+  <p class="m-0">
+    <b>Ganancia:</b> {{revenue | currency}}
+  </p>
+</p-card>
+
+<br />
+
+<p-card header="Equipo">
+  <p class="m-0">
+    <b>Volumen Grupal (VG):</b> {{grupalVolume}}
+  </p>
+  <p class="m-0">
+    <b>% Bonificación:</b> {{bonusPercentage}} %
+  </p>
+  <p class="m-0">
+    <b>Título:</b> {{title}}
+  </p>
+  <p class="m-0">
+    <b>Puntos Laterales:</b> {{sidePoints}}
+  </p>
+</p-card>
+
+<br />
+
+<p-card header="Bonos Mensuales ({{totalBonus | currency}})">
+  <p class="m-0">
+    <b>Bono Personal:</b> {{monthlyBonusModel?.personalBonus | currency}}
+  </p>
+  <p class="m-0">
+    <b>Bono de Grupo:</b> {{monthlyBonusModel?.grupalBonus | currency}}
+  </p>
+  <p class="m-0">
+    <b>Bono de Auto:</b> {{monthlyBonusModel?.carBonus | currency}}
+  </p>
+  <p class="m-0">
+    <b>Bono de Liderazgo:</b> {{totalLeadershipBonus | currency}}
+  </p>
+  <ul>
+    <li *ngFor="let leadershipBonus of monthlyBonusModel?.leadershipBonusArr; let i = index">
+      <b>Gen {{i + 1}}:</b> {{leadershipBonus | currency}}
+    </li>
+  </ul>
+</p-card>

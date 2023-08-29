@@ -1,0 +1,31 @@
+<div class="card flex flex-wrap gap-3 p-fluid">
+  <div class="flex-auto">
+    <label for="name">Nombre</label>
+    <input pInputText id="name" [(ngModel)]="settingsModel.name" />
+  </div>
+  <div class="flex-auto">
+    <label for="integeronly">Compras Dr C Tuna</label>
+    <p-inputNumber inputId="integeronly" [(ngModel)]="settingsModel.shopping.drCTuna" mode="decimal" [min]="0"
+      [maxFractionDigits]="2"> </p-inputNumber>
+  </div>
+  <div class="flex-auto">
+    <label for="withoutgrouping">Compras Farmasi</label>
+    <p-inputNumber [(ngModel)]="settingsModel.shopping.farmasi" mode="decimal" inputId="withoutgrouping" [min]="0"
+      [maxFractionDigits]="2">
+    </p-inputNumber>
+  </div>
+  <div class="flex-auto">
+    <label for="minmaxfraction">Ventas Dr C Tuna</label>
+    <p-inputNumber [(ngModel)]="settingsModel.sales.drCTuna" inputId="minmaxfraction" mode="decimal" [min]="0"
+      [maxFractionDigits]="2"> </p-inputNumber>
+  </div>
+  <div class="flex-auto">
+    <label for="minmax">Ventas Farmasi</label>
+    <p-inputNumber [(ngModel)]="settingsModel.sales.farmasi" inputId="minmax" inputId="minmax" mode="decimal" [min]="0"
+      [maxFractionDigits]="2">
+    </p-inputNumber>
+  </div>
+</div>
+<div class="card flex justify-content-center">
+  <p-button label="Guardar" (onClick)="saveSettings()"></p-button>
+</div>

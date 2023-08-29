@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+<p-confirmDialog #cd [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+<br />
+<p-button (click)="showDialog()" label="Añadir miembro"></p-button>
+<br />
+<div class="card">
+  <div class="flex flex-column md:flex-row gap-5">
+    <div class="flex-auto overflow-x-auto">
+      <p-organizationChart [value]="data">
+        <ng-template let-node pTemplate="person">
+          <div class="flex  flex-wrap gap-3 justify-content-center">
+            <p-button icon="pi pi-pencil" (onClick)="loadEditDialog(node)"
+              styleClass="p-button-sm p-button-rounded"></p-button>
+            <p-button icon="pi pi-trash" (onClick)="deleteTeamMember(node)"
+              styleClass="p-button-sm p-button-rounded p-button-danger"></p-button>
+          </div>
+          <div class="text-center">
+            <!-- <img [src]="node.data.image" class="mb-3 w-3rem h-3rem" /> -->
+            <div class="font-bold">{{ node.data.name }}</div>
+            <div>{{ node.data.title }} {{ node.data.bonification }}%</div>
+            <p><b>VP:</b> {{ node.data.pv }}</p>
+            <p><b>VG:</b> {{ node.data.gv }}</p>
+          </div>
+        </ng-template>
+      </p-organizationChart>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Nuevo miembro" [(visible)]="visible" [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
+  <div class="card flex flex-wrap gap-3 p-fluid">
+    <div class="flex flex-column gap-2">
+      <label for="name">Nombre</label>
+      <input pInputText id="name" [(ngModel)]="name" />
+      <label for="personalVolume">VP</label>
+      <p-inputNumber inputId="personalVolume" [(ngModel)]="personalVolume" [min]="0"> </p-inputNumber>
+      <label for="parentId">Miembro padre</label>
+      <p-dropdown [options]="members" [(ngModel)]="selectedParentId" placeholder="Seleccionar" id="parentId"
+        [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="addTeamMember()" label="Guardar"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Editar miembro" [(visible)]="showEditDialog" [style]="{width: '30vw'}" [modal]="true"
+  [draggable]="false">
+  <div class="card flex flex-wrap gap-3 p-fluid">
+    <div class="flex flex-column gap-2">
+      <label for="name">Nombre</label>
+      <input pInputText id="name" [(ngModel)]="name" />
+      <label for="personalVolume">VP</label>
+      <p-inputNumber inputId="personalVolume" [(ngModel)]="personalVolume" [min]="0"> </p-inputNumber>
+      <label for="parentId">Miembro padre</label>
+      <p-dropdown [options]="members" [(ngModel)]="selectedParentId" placeholder="Seleccionar" id="parentId"
+        [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="editTeamMember()" label="Guardar"></p-button>
+  </ng-template>
+</p-dialog>
