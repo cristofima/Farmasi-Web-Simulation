@@ -41,13 +41,42 @@ export class TeamMemberUtil {
       if (node.children) {
         this.calculateFields(node.children);
         node.data.gv = node.data.pv + node.children.reduce((acc, child) => acc + child.data.gv, 0);
-        node.data.sp = node.children.filter(f => f.data.bonification < 18).reduce((acc, child) => acc + child.data.gv, 0);
+        this.setSidePoints(node);
       } else {
         node.data.gv = node.data.pv;
       }
 
       this.calculateBonificaionAndTitle(node);
     });
+  }
+
+  private static setSidePoints(node: TreeNode) {
+    if (!node.children) return;
+
+    let sidePoints = node.children.filter(f => f.data.bonification < 18).reduce((acc, child) => acc + child.data.gv, 0);
+
+    [18, 22].forEach(bonification => {
+      let maxChildID = this.getChildIDWithMaxGVAtXBonus(node, bonification);
+      sidePoints += node.children!.filter(f => f.data.bonification == bonification && f.data.id != maxChildID).reduce((acc, child) => acc + child.data.gv, 0);
+    });
+
+    node.data.sp = sidePoints;
+  }
+
+  private static getChildIDWithMaxGVAtXBonus(node: TreeNode, bonification: number): string | null {
+    if (!node.children) return null;
+
+    let children = node.children.filter(f => f.data.bonification == bonification);
+    if (children.length == 0) return null;
+
+    let maxChild = children[0];
+    children.forEach(child => {
+      if (child.data.bonification == bonification && child.data.gv > maxChild.data.gv) {
+        maxChild = child;
+      }
+    });
+
+    return maxChild.data.id;
   }
 
   private static calculateBonificaionAndTitle(node: TreeNode) {

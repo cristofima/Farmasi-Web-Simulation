@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { SettingsModel } from 'src/app/models/settings.model';
 import { TeamMemberModel } from 'src/app/models/team-member.model';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -11,7 +12,7 @@ import { TeamMemberService } from 'src/app/services/team-member.service';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(private settingsService: SettingsService, private teamMemberService: TeamMemberService) { }
+  constructor(private settingsService: SettingsService, private teamMemberService: TeamMemberService, private messageService: MessageService) { }
 
   settingsModel!: SettingsModel;
 
@@ -27,10 +28,7 @@ export class SettingsComponent implements OnInit {
       personalVolume: this.settingsModel.shopping.drCTuna + this.settingsModel.shopping.farmasi + this.settingsModel.sales.drCTuna + this.settingsModel.sales.farmasi
     };
 
-    if (!this.settingsModel.id) {
-      this.teamMemberService.addTeamMember(teamMember);
-    } else {
-      this.teamMemberService.editTeamMember(teamMember.id, teamMember.name, teamMember.personalVolume);
-    }
+    this.teamMemberService.editTeamMember(teamMember.id, teamMember.name, teamMember.personalVolume);
+    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: 'Configuración actualizada' });
   }
 }

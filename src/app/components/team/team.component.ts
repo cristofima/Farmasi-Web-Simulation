@@ -55,6 +55,7 @@ export class TeamComponent implements OnInit {
   editTeamMember() {
     this.showEditDialog = false;
     this.teamMemberService.editTeamMember(this.selectedId, this.name, this.personalVolume, this.selectedParentId);
+    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${this.name} actualizado` });
     this.resetDialog();
   }
 
@@ -67,7 +68,7 @@ export class TeamComponent implements OnInit {
       accept: () => {
         this.teamMemberService.deleteTeamMember(treeNode);
         this.resetDialog();
-        this.messageService.add({ severity: 'info', summary: 'Confirmación', detail: `Miembro ${name} eliminado` });
+        this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} eliminado` });
       }
     });
   }

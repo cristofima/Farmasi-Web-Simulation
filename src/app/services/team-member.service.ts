@@ -22,6 +22,8 @@ export class TeamMemberService {
       teamMember.parentId = parentId;
 
       localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+    } else {
+      this.addTeamMember({ id, name, personalVolume, parentId });
     }
   }
 
