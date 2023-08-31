@@ -5,9 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { HomeComponent } from './components/home/home.component';
-import { TeamComponent } from './components/team/team.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -21,13 +19,14 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { OrganizationChartComponent } from './components/organization-chart/organization-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TeamComponent,
-    SettingsComponent
+    SettingsComponent,
+    OrganizationChartComponent
   ],
   imports: [
     BrowserModule,

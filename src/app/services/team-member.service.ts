@@ -7,10 +7,21 @@ import { TreeNode } from 'primeng/api';
 })
 export class TeamMemberService {
 
+  private storageKey = 'teamMembers';
+
+  setStorageKey(storageKey: string) {
+    this.storageKey = storageKey || 'teamMembers';
+  }
+
   addTeamMember(teamMember: TeamMemberModel) {
     const teamMembers = this.getTeamMembers();
     teamMembers.push(teamMember);
-    localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+    localStorage.setItem(this.storageKey, JSON.stringify(teamMembers));
+  }
+
+  getTeamMember(id: string) {
+    const teamMembers = this.getTeamMembers();
+    return teamMembers.find(x => x.id == id);
   }
 
   editTeamMember(id: string, name: string, personalVolume: number, parentId?: string) {
@@ -21,14 +32,12 @@ export class TeamMemberService {
       teamMember.personalVolume = personalVolume;
       teamMember.parentId = parentId;
 
-      localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
-    } else {
-      this.addTeamMember({ id, name, personalVolume, parentId });
+      localStorage.setItem(this.storageKey, JSON.stringify(teamMembers));
     }
   }
 
   getTeamMembers() {
-    const teamMembers = localStorage.getItem('teamMembers');
+    const teamMembers = localStorage.getItem(this.storageKey);
     return teamMembers ? JSON.parse(teamMembers) as TeamMemberModel[] : [];
   }
 
@@ -56,7 +65,7 @@ export class TeamMemberService {
     const teamMember = teamMembers.find(x => x.id === treeNode.data.id);
     if (teamMember) {
       teamMembers.splice(teamMembers.indexOf(teamMember), 1);
-      localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+      localStorage.setItem(this.storageKey, JSON.stringify(teamMembers));
     }
   }
 }

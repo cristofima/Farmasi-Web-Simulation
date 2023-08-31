@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit {
       personalVolume: this.settingsModel.shopping.drCTuna + this.settingsModel.shopping.farmasi + this.settingsModel.sales.drCTuna + this.settingsModel.sales.farmasi
     };
 
-    this.teamMemberService.editTeamMember(teamMember.id, teamMember.name, teamMember.personalVolume);
+    this.teamMemberService.getTeamMember(teamMember.id) ? this.teamMemberService.editTeamMember(teamMember.id, teamMember.name, teamMember.personalVolume) : this.teamMemberService.addTeamMember(teamMember);
     this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: 'Configuración actualizada' });
   }
 }

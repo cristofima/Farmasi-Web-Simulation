@@ -7,6 +7,7 @@ describe('TeamMemberService without Angular testing support', () => {
 
   beforeEach(() => {
     teamMemberService = new TeamMemberService();
+    teamMemberService.setStorageKey('teamMembersTest');
     localStorage.clear();
   });
 
@@ -18,12 +19,12 @@ describe('TeamMemberService without Angular testing support', () => {
     };
 
     teamMemberService.addTeamMember(teamMember);
-    let membersArr = teamMemberService.getTeamMembers();
+    let savedTeamMember = teamMemberService.getTeamMember(teamMember.id);
 
-    expect(membersArr.length).toEqual(1);
-    expect(membersArr[0].id).toEqual(teamMember.id);
-    expect(membersArr[0].name).toEqual(teamMember.name);
-    expect(membersArr[0].personalVolume).toEqual(teamMember.personalVolume);
+    expect(savedTeamMember).not.toBeUndefined();
+    expect(savedTeamMember!.id).toEqual(teamMember.id);
+    expect(savedTeamMember!.name).toEqual(teamMember.name);
+    expect(savedTeamMember!.personalVolume).toEqual(teamMember.personalVolume);
   });
 
   it('#editTeamMember should modify the existing data', () => {
@@ -40,11 +41,11 @@ describe('TeamMemberService without Angular testing support', () => {
     let newParentId = '1';
     teamMemberService.editTeamMember(teamMember.id, newName, newPV, newParentId);
 
-    let membersArr = teamMemberService.getTeamMembers();
+    let editedTeamMember = teamMemberService.getTeamMember(teamMember.id);
 
-    expect(membersArr[0].name).toEqual(newName);
-    expect(membersArr[0].personalVolume).toEqual(newPV);
-    expect(membersArr[0].parentId).toEqual(newParentId);
+    expect(editedTeamMember!.name).toEqual(newName);
+    expect(editedTeamMember!.personalVolume).toEqual(newPV);
+    expect(editedTeamMember!.parentId).toEqual(newParentId);
   });
 
   it('#deleteTeamMember should delete the existing record', () => {
@@ -62,9 +63,9 @@ describe('TeamMemberService without Angular testing support', () => {
 
     teamMemberService.deleteTeamMember(treeNode);
 
-    let membersArr = teamMemberService.getTeamMembers();
+    let deletedTeamMember = teamMemberService.getTeamMember(teamMember.id);
 
-    expect(membersArr.length).toEqual(0);
+    expect(deletedTeamMember).toBeUndefined();
   });
 
   it('#deleteTeamMember should delete the existing record with its children', () => {

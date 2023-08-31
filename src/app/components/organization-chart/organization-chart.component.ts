@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { TeamMemberModel } from 'src/app/models/team-member.model';
 import { TeamMemberService } from 'src/app/services/team-member.service';
@@ -6,13 +6,14 @@ import { Guid } from 'js-guid';
 import { TeamMemberUtil } from 'src/app/utils/team-member.util';
 
 @Component({
-  selector: 'app-team',
-  templateUrl: './team.component.html',
-  styleUrls: ['./team.component.scss']
+  selector: 'app-organization-chart',
+  templateUrl: './organization-chart.component.html'
 })
-export class TeamComponent implements OnInit {
+export class OrganizationChartComponent implements OnInit {
 
   constructor(private teamMemberService: TeamMemberService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
+
+  @Input() storageKey!: string;
 
   data: TreeNode[] = [];
   visible = false;
@@ -24,6 +25,7 @@ export class TeamComponent implements OnInit {
   personalVolume!: number;
 
   ngOnInit(): void {
+    this.teamMemberService.setStorageKey(this.storageKey);
     this.resetDialog();
   }
 

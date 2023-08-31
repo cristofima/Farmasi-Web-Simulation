@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { TeamComponent } from './components/team/team.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { OrganizationChartComponent } from './components/organization-chart/organization-chart.component';
 
 const routes: Routes = [
   {
@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: "team",
-    component: TeamComponent
+    component: OrganizationChartComponent
   },
   {
     path: "settings",
