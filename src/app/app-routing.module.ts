@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { OrganizationChartComponent } from './components/organization-chart/organization-chart.component';
+import { SimulationsComponent } from './components/simulations/simulations.component';
+import { SimulationDetailsComponent } from './components/simulation-details/simulation-details.component';
 
 const routes: Routes = [
   {
@@ -12,6 +14,14 @@ const routes: Routes = [
   {
     path: "team",
     component: OrganizationChartComponent
+  },
+  {
+    path: "simulations",
+    component: SimulationsComponent
+  },
+  {
+    path: "simulations/:id",
+    component: SimulationDetailsComponent
   },
   {
     path: "settings",

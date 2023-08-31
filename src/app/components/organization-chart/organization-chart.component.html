@@ -7,14 +7,13 @@
     <div class="flex-auto overflow-x-auto">
       <p-organizationChart [value]="data">
         <ng-template let-node pTemplate="person">
-          <div class="flex  flex-wrap gap-3 justify-content-center">
+          <div *ngIf="node.data.parentId" class="flex  flex-wrap gap-3 justify-content-center">
             <p-button icon="pi pi-pencil" (onClick)="loadEditDialog(node)"
               styleClass="p-button-sm p-button-rounded"></p-button>
             <p-button icon="pi pi-trash" (onClick)="deleteTeamMember(node)"
               styleClass="p-button-sm p-button-rounded p-button-danger"></p-button>
           </div>
           <div class="text-center">
-            <!-- <img [src]="node.data.image" class="mb-3 w-3rem h-3rem" /> -->
             <div class="font-bold">{{ node.data.name }}</div>
             <div>{{ node.data.title }} {{ node.data.bonification }}%</div>
             <p><b>VP:</b> {{ node.data.pv }}</p>

@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
 
     this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
     this.totalLeadershipBonus = this.monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
-    this.totalBonus = this.monthlyBonusModel.personalBonus + this.monthlyBonusModel.grupalBonus + this.monthlyBonusModel.carBonus + this.monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
+    this.totalBonus = this.monthlyBonusModel.personalBonus + this.monthlyBonusModel.grupalBonus + this.monthlyBonusModel.carBonus + this.totalLeadershipBonus;
   }
 
 }

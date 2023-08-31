@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { OrganizationChartComponent } from './components/organization-chart/organization-chart.component';
+import { SimulationsComponent } from './components/simulations/simulations.component';
 
 import { TabMenuModule } from 'primeng/tabmenu';
 import { OrganizationChartModule } from 'primeng/organizationchart';
@@ -18,15 +20,18 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { OrganizationChartComponent } from './components/organization-chart/organization-chart.component';
+import { SimulationDetailsComponent } from './components/simulation-details/simulation-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SettingsComponent,
-    OrganizationChartComponent
+    OrganizationChartComponent,
+    SimulationsComponent,
+    SimulationDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,8 @@ import { OrganizationChartComponent } from './components/organization-chart/orga
     DropdownModule,
     DialogModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    TableModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
