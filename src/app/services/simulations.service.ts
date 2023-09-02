@@ -38,12 +38,35 @@ export class SimulationsService {
     return simulations ? JSON.parse(simulations) as SimulationModel[] : [];
   }
 
-  private deleteSimulation(simulation: SimulationModel) {
+  deleteSimulation(id: string) {
     const simulations = this.getSimulations();
-    const index = simulations.findIndex(x => x.id === simulation.id);
+    const index = simulations.findIndex(x => x.id === id);
     if (index >= 0) {
       simulations.splice(index, 1);
       localStorage.setItem(this.storageKey, JSON.stringify(simulations));
     }
+  }
+
+  updateSimulationDetails(id: string) {
+    let simulations = this.getSimulations();
+    let simulation = simulations.find(x => x.id === id);
+    if (!simulation) return;
+
+    let teamMembers = this.teamMemberService.getTeamMembers();
+    localStorage.setItem(`simulation-${simulation.id}`, JSON.stringify(teamMembers));
+
+    let tree = TeamMemberUtil.listToTree(teamMembers);
+    if (tree.length == 0) return;
+
+    TeamMemberUtil.calculateFields(tree);
+    simulation.title = tree[0].data.title;
+    simulation.grupalVolume = tree[0].data.gv;
+    simulation.lastUpdateDate = new Date();
+
+    let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
+    let totalLeadershipBonus = monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
+    simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.grupalBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
+
+    localStorage.setItem(this.storageKey, JSON.stringify(simulations));
   }
 }

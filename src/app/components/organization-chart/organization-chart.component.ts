@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { TeamMemberModel } from 'src/app/models/team-member.model';
 import { TeamMemberService } from 'src/app/services/team-member.service';
@@ -14,6 +14,8 @@ export class OrganizationChartComponent implements OnInit {
   constructor(private teamMemberService: TeamMemberService, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   @Input() storageKey!: string;
+  @Output("updateSimulationDetails") updateSimulationDetailsEvent = new EventEmitter<void>();
+  private isSumulation = false;
 
   data: TreeNode[] = [];
   visible = false;
@@ -25,6 +27,7 @@ export class OrganizationChartComponent implements OnInit {
   personalVolume!: number;
 
   ngOnInit(): void {
+    if (this.storageKey) this.isSumulation = this.storageKey.includes('simulation');
     this.teamMemberService.setStorageKey(this.storageKey);
     this.resetDialog();
   }
@@ -44,6 +47,7 @@ export class OrganizationChartComponent implements OnInit {
 
     this.teamMemberService.addTeamMember(newTeamMember);
     this.resetDialog();
+    if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
   }
 
   loadEditDialog(treeNode: TreeNode) {
@@ -59,6 +63,7 @@ export class OrganizationChartComponent implements OnInit {
     this.teamMemberService.editTeamMember(this.selectedId, this.name, this.personalVolume, this.selectedParentId);
     this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${this.name} actualizado` });
     this.resetDialog();
+    if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
   }
 
   deleteTeamMember(treeNode: TreeNode) {
@@ -70,6 +75,7 @@ export class OrganizationChartComponent implements OnInit {
       accept: () => {
         this.teamMemberService.deleteTeamMember(treeNode);
         this.resetDialog();
+        if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
         this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} eliminado` });
       }
     });

@@ -20,6 +20,10 @@ export class SimulationsComponent implements OnInit {
     this.simulations = this.simulationsService.getSimulations();
   }
 
+  goToDetails(id: string) {
+    this.router.navigate(['/simulations', id]);
+  }
+
   addSimulation() {
     this.showDialog = false;
     let simulation: SimulationModel = {
