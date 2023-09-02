@@ -3,6 +3,7 @@ import { SimulationModel } from 'src/app/models/simulation.model';
 import { SimulationsService } from 'src/app/services/simulations.service';
 import { Guid } from 'js-guid';
 import { Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-simulations',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SimulationsComponent implements OnInit {
 
-  constructor(private simulationsService: SimulationsService, private router: Router) { }
+  constructor(private simulationsService: SimulationsService, private router: Router, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
   simulations: SimulationModel[] = [];
   name!: string;
@@ -31,11 +32,25 @@ export class SimulationsComponent implements OnInit {
       name: this.name,
       grupalVolume: 0,
       totalBonus: 0,
+      sidePoints: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date()
     };
 
     this.simulationsService.addSimulation(simulation);
     this.router.navigate(['/simulations', simulation.id]);
+  }
+
+  deleteSimulation(simulation: SimulationModel) {
+    this.confirmationService.confirm({
+      message: `¿Está seguro de eliminar la simulación <b>${simulation.name}</b>?`,
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.simulationsService.deleteSimulation(simulation.id);
+        this.simulations = this.simulationsService.getSimulations();
+        this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Simulación ${simulation.name} eliminada` });
+      }
+    });
   }
 }

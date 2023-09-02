@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SimulationModel } from '../models/simulation.model';
 import { TeamMemberService } from './team-member.service';
 import { TeamMemberUtil } from '../utils/team-member.util';
+import { TeamMemberModel } from '../models/team-member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +15,7 @@ export class SimulationsService {
 
   addSimulation(simulation: SimulationModel) {
     let simulations = this.getSimulations();
-
-    let teamMembers = this.teamMemberService.getTeamMembers();
-    localStorage.setItem(`simulation-${simulation.id}`, JSON.stringify(teamMembers));
-
-    let tree = TeamMemberUtil.listToTree(teamMembers);
-    if (tree.length == 0) return;
-
-    TeamMemberUtil.calculateFields(tree);
-    simulation.title = tree[0].data.title;
-    simulation.grupalVolume = tree[0].data.gv;
-
-    let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
-    let totalLeadershipBonus = monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
-    simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.grupalBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
-
-    simulations.push(simulation);
-    localStorage.setItem(this.storageKey, JSON.stringify(simulations));
+    this.addOrUpdateSimulation(simulation, simulations);
   }
 
   getSimulations() {
@@ -44,6 +29,7 @@ export class SimulationsService {
     if (index >= 0) {
       simulations.splice(index, 1);
       localStorage.setItem(this.storageKey, JSON.stringify(simulations));
+      localStorage.removeItem(`simulation-${id}`);
     }
   }
 
@@ -52,8 +38,19 @@ export class SimulationsService {
     let simulation = simulations.find(x => x.id === id);
     if (!simulation) return;
 
-    let teamMembers = this.teamMemberService.getTeamMembers();
-    localStorage.setItem(`simulation-${simulation.id}`, JSON.stringify(teamMembers));
+    this.addOrUpdateSimulation(simulation, simulations, false);
+  }
+
+  private addOrUpdateSimulation(simulation: SimulationModel, simulations: SimulationModel[], isAddAction = true) {
+    let teamMembers: TeamMemberModel[] = [];
+    if (isAddAction) {
+      this.teamMemberService.setStorageKey('teamMembers');
+      teamMembers = this.teamMemberService.getTeamMembers();
+      localStorage.setItem(`simulation-${simulation.id}`, JSON.stringify(teamMembers));
+    } else {
+      this.teamMemberService.setStorageKey(`simulation-${simulation.id}`);
+      teamMembers = this.teamMemberService.getTeamMembers();
+    }
 
     let tree = TeamMemberUtil.listToTree(teamMembers);
     if (tree.length == 0) return;
@@ -61,12 +58,18 @@ export class SimulationsService {
     TeamMemberUtil.calculateFields(tree);
     simulation.title = tree[0].data.title;
     simulation.grupalVolume = tree[0].data.gv;
-    simulation.lastUpdateDate = new Date();
+    simulation.sidePoints = tree[0].data.sp;
+    if (!isAddAction) simulation.lastUpdateDate = new Date();
 
     let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
     let totalLeadershipBonus = monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
+    simulation.personalBonus = monthlyBonusModel.personalBonus;
+    simulation.grupalBonus = monthlyBonusModel.grupalBonus;
+    simulation.carBonus = monthlyBonusModel.carBonus;
+    simulation.leadershipBonusArr = monthlyBonusModel.leadershipBonusArr;
     simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.grupalBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
 
+    if (isAddAction) simulations.push(simulation);
     localStorage.setItem(this.storageKey, JSON.stringify(simulations));
   }
 }
