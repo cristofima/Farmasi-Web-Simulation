@@ -7,11 +7,13 @@
     <div class="flex-auto overflow-x-auto">
       <p-organizationChart [value]="data">
         <ng-template let-node pTemplate="person">
-          <div *ngIf="node.data.parentId" class="flex  flex-wrap gap-3 justify-content-center">
-            <p-button icon="pi pi-pencil" (onClick)="loadEditDialog(node)"
-              styleClass="p-button-sm p-button-rounded"></p-button>
-            <p-button icon="pi pi-trash" (onClick)="deleteTeamMember(node)"
-              styleClass="p-button-sm p-button-rounded p-button-danger"></p-button>
+          <div class="flex  flex-wrap gap-3 justify-content-center">
+            <button pButton icon="pi pi-folder" (click)="loadDetailsDialog(node)" title="Ver más detalles"
+              class="p-button-rounded p-button-secondary p-button-small"></button>
+            <button *ngIf="node.data.parentId" pButton icon="pi pi-pencil" (click)="loadEditDialog(node)" title="Editar"
+              class="p-button-rounded p-button-small"></button>
+            <button *ngIf="node.data.parentId" pButton icon="pi pi-trash" (click)="deleteTeamMember(node)"
+              title="Eliminar" class="p-button-rounded p-button-danger p-button-small"></button>
           </div>
           <div class="text-center">
             <div class="font-bold">{{ node.data.name }}</div>
@@ -58,4 +60,49 @@
   <ng-template pTemplate="footer">
     <p-button (click)="editTeamMember()" label="Guardar"></p-button>
   </ng-template>
+</p-dialog>
+
+<p-dialog header="Detalles de {{selectedTreeNode?.data?.name}}" [(visible)]="showDetailsDialog"
+  [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
+  <div class="card flex flex-wrap gap-3 p-fluid">
+    <p-card header="Equipo" *ngIf="selectedTreeNode">
+      <p class="m-0">
+        <b>Volumen Personal (VP):</b> {{selectedTreeNode.data.pv}}
+      </p>
+      <p class="m-0">
+        <b>Volumen Grupal (VG):</b> {{selectedTreeNode.data.gv}}
+      </p>
+      <p class="m-0">
+        <b>% Bonificación:</b> {{selectedTreeNode.data.bonification}} %
+      </p>
+      <p class="m-0">
+        <b>Título:</b> {{selectedTreeNode.data.title}}
+      </p>
+      <p class="m-0" *ngIf="selectedTreeNode.data.sp">
+        <b>Puntos Laterales:</b> {{selectedTreeNode.data.sp}}
+      </p>
+      <p class="m-0" *ngIf="selectedTreeNode.data.tp">
+        <b>Puntos de Título:</b> {{selectedTreeNode.data.tp}}
+      </p>
+    </p-card>
+    <p-card header="Bonos Mensuales ({{totalBonus | currency}})" *ngIf="monthlyBonusModel">
+      <p class="m-0">
+        <b>Bono Personal:</b> {{monthlyBonusModel.personalBonus | currency}}
+      </p>
+      <p class="m-0">
+        <b>Bono de Grupo:</b> {{monthlyBonusModel.grupalBonus | currency}}
+      </p>
+      <p class="m-0" *ngIf="monthlyBonusModel.carBonus">
+        <b>Bono de Auto:</b> {{monthlyBonusModel.carBonus | currency}}
+      </p>
+      <p class="m-0" *ngIf="totalLeadershipBonus">
+        <b>Bono de Liderazgo:</b> {{totalLeadershipBonus | currency}}
+      </p>
+      <ul *ngIf="totalLeadershipBonus">
+        <li *ngFor="let leadershipBonus of monthlyBonusModel.leadershipBonusArr; let i = index">
+          <b>Gen {{i + 1}}:</b> {{leadershipBonus | currency}}
+        </li>
+      </ul>
+    </p-card>
+  </div>
 </p-dialog>

@@ -40,8 +40,9 @@
         <td>{{simulation.lastUpdateDate | date: 'medium'}}</td>
         <td>
           <div class="flex flex-wrap gap-3 justify-content-center">
-            <p-button (onClick)="goToDetails(simulation.id)" icon="pi pi-folder" styleClass="p-button-info"></p-button>
-            <p-button (onClick)="deleteSimulation(simulation)" icon="pi pi-trash"
+            <p-button (onClick)="goToDetails(simulation.id)" icon="pi pi-folder" styleClass="p-button-info"
+              title="Editar"></p-button>
+            <p-button (onClick)="deleteSimulation(simulation)" icon="pi pi-trash" title="Eliminar"
               styleClass="p-button-danger"></p-button>
           </div>
         </td>

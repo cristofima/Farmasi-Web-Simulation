@@ -4,10 +4,12 @@ import { TeamMemberModel } from 'src/app/models/team-member.model';
 import { TeamMemberService } from 'src/app/services/team-member.service';
 import { Guid } from 'js-guid';
 import { TeamMemberUtil } from 'src/app/utils/team-member.util';
+import { MonthlyBonusModel } from 'src/app/models/monthly-bonus.model';
 
 @Component({
   selector: 'app-organization-chart',
-  templateUrl: './organization-chart.component.html'
+  templateUrl: './organization-chart.component.html',
+  styleUrls: ['./organization-chart.component.scss']
 })
 export class OrganizationChartComponent implements OnInit {
 
@@ -20,11 +22,17 @@ export class OrganizationChartComponent implements OnInit {
   data: TreeNode[] = [];
   visible = false;
   showEditDialog = false;
+  showDetailsDialog = false;
   members: TeamMemberModel[] = []
   selectedParentId!: string;
+  selectedTreeNode!: TreeNode;
   private selectedId!: string;
   name!: string;
   personalVolume!: number;
+
+  monthlyBonusModel?: MonthlyBonusModel;
+  totalBonus = 0;
+  totalLeadershipBonus = 0;
 
   ngOnInit(): void {
     if (this.storageKey) this.isSumulation = this.storageKey.includes('simulation');
@@ -54,9 +62,23 @@ export class OrganizationChartComponent implements OnInit {
   loadEditDialog(treeNode: TreeNode) {
     this.showEditDialog = true;
     this.selectedId = treeNode.data.id;
-    this.name = treeNode.data.name
+    this.name = treeNode.data.name;
     this.personalVolume = treeNode.data.pv;
     this.selectedParentId = treeNode.data.parentId;
+  }
+
+  loadDetailsDialog(treeNode: TreeNode) {
+    this.showDetailsDialog = true;
+    this.selectedId = treeNode.data.id;
+    this.selectedTreeNode = treeNode;
+    this.monthlyBonusModel = undefined;
+    this.totalLeadershipBonus = 0;
+    this.totalBonus = 0;
+    if (treeNode.data.bonification == 0) return;
+
+    this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(treeNode);
+    this.totalLeadershipBonus = this.monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
+    this.totalBonus = this.monthlyBonusModel.personalBonus + this.monthlyBonusModel.grupalBonus + this.monthlyBonusModel.carBonus + this.totalLeadershipBonus;
   }
 
   editTeamMember() {
