@@ -1,7 +1,7 @@
 import { TreeNode } from "primeng/api";
 import { TeamMemberModel } from "../models/team-member.model";
 import { MonthlyBonusModel } from "../models/monthly-bonus.model";
-import { TitleEnum } from "../enums/title.enum";
+import { TitleEnum, TitlePointEnum } from "../enums/title.enum";
 
 export class TeamMemberUtil {
 
@@ -46,7 +46,7 @@ export class TeamMemberUtil {
         node.data.gv = node.data.pv;
       }
 
-      this.calculateBonificaionAndTitle(node);
+      this.calculateBonificationAndTitle(node);
     });
   }
 
@@ -79,7 +79,7 @@ export class TeamMemberUtil {
     return maxChild.data.id;
   }
 
-  private static calculateBonificaionAndTitle(node: TreeNode) {
+  private static calculateBonificationAndTitle(node: TreeNode) {
     let title = "";
 
     if (node.data.gv < 5000) {
@@ -107,10 +107,22 @@ export class TeamMemberUtil {
       if (!node.children) return;
 
       let lidersAt25 = 0;
+      let titlePoints = 0;
+
+      const titleEnumValues = Object.values(TitleEnum);
 
       node.children.forEach(c => {
         if (c.data.bonification == 25) lidersAt25++;
+        if (c.data.title == TitleEnum.BeautyInfluencer) return;
+
+        let titleKey = Object.keys(TitleEnum)[titleEnumValues.indexOf(c.data.title)];
+        let titlePointKey = Object.keys(TitlePointEnum).find(key => key == titleKey);
+        if (titlePointKey) {
+          titlePoints += TitlePointEnum[titlePointKey as keyof typeof TitlePointEnum];
+        }
       });
+
+      node.data.tp = titlePoints;
 
       if (node.data.sp >= 10000 && lidersAt25 >= 30 && node.data.tp >= 240) {
         title = TitleEnum.JefeEjectutivo;

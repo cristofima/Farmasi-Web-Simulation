@@ -59,6 +59,7 @@ export class SimulationsService {
     simulation.title = tree[0].data.title;
     simulation.grupalVolume = tree[0].data.gv;
     simulation.sidePoints = tree[0].data.sp;
+    simulation.titlePoints = tree[0].data.tp;
     if (!isAddAction) simulation.lastUpdateDate = new Date();
 
     let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);

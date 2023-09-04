@@ -14,6 +14,8 @@
         <th pSortableColumn="grupalVolumne">Volumen Grupal <p-sortIcon field="grupalVolumne"></p-sortIcon></th>
         <th pSortableColumn="sidePoints">Puntos Laterales <p-sortIcon field="sidePoints"></p-sortIcon>
         </th>
+        <th pSortableColumn="titlePoints">Puntos de Título <p-sortIcon field="titlePoints"></p-sortIcon>
+        </th>
         <th pSortableColumn="totalBonus">Bono Mensual <p-sortIcon field="totalBonus"></p-sortIcon></th>
         <th pSortableColumn="creationDate">Fecha Creación <p-sortIcon field="creationDate"></p-sortIcon>
         </th>
@@ -32,6 +34,7 @@
         <td>{{simulation.title}}</td>
         <td>{{simulation.grupalVolume}}</td>
         <td>{{simulation.sidePoints}}</td>
+        <td>{{simulation.titlePoints}}</td>
         <td>{{simulation.totalBonus | currency}}</td>
         <td>{{simulation.creationDate | date: 'medium' }}</td>
         <td>{{simulation.lastUpdateDate | date: 'medium'}}</td>

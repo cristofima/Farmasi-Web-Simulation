@@ -30,9 +30,6 @@ export class SimulationsComponent implements OnInit {
     let simulation: SimulationModel = {
       id: Guid.newGuid().toString(),
       name: this.name,
-      grupalVolume: 0,
-      totalBonus: 0,
-      sidePoints: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date()
     };

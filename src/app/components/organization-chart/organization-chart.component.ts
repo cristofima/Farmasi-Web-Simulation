@@ -46,6 +46,7 @@ export class OrganizationChartComponent implements OnInit {
     };
 
     this.teamMemberService.addTeamMember(newTeamMember);
+    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${this.name} añadido` });
     this.resetDialog();
     if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
   }

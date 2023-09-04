@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   revenue = 0;
   bonusPercentage = 0
   sidePoints = 0;
+  titlePoints = 0;
   title!: string;
 
   monthlyBonusModel!: MonthlyBonusModel;
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
     this.bonusPercentage = tree[0].data.bonification;
     this.grupalVolume = tree[0].data.gv;
     this.sidePoints = tree[0].data.sp;
+    this.titlePoints = tree[0].data.tp;
 
     this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
     this.totalLeadershipBonus = this.monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
