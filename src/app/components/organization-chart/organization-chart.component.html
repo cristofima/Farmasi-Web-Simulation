@@ -27,38 +27,27 @@
   </div>
 </div>
 
-<p-dialog header="Nuevo miembro" [(visible)]="visible" [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
-  <div class="card flex flex-wrap gap-3 p-fluid">
-    <div class="flex flex-column gap-2">
-      <label for="name">Nombre</label>
-      <input pInputText id="name" [(ngModel)]="name" />
-      <label for="personalVolume">VP</label>
-      <p-inputNumber inputId="personalVolume" [(ngModel)]="personalVolume" [min]="0"> </p-inputNumber>
-      <label for="parentId">Miembro padre</label>
-      <p-dropdown [options]="members" [(ngModel)]="selectedParentId" placeholder="Seleccionar" id="parentId"
-        [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
-    </div>
-  </div>
-  <ng-template pTemplate="footer">
-    <p-button (click)="addTeamMember()" label="Guardar"></p-button>
-  </ng-template>
-</p-dialog>
+<p-scrollTop></p-scrollTop>
 
-<p-dialog header="Editar miembro" [(visible)]="showEditDialog" [style]="{width: '30vw'}" [modal]="true"
-  [draggable]="false">
-  <div class="card flex flex-wrap gap-3 p-fluid">
-    <div class="flex flex-column gap-2">
-      <label for="name">Nombre</label>
-      <input pInputText id="name" [(ngModel)]="name" />
-      <label for="personalVolume">VP</label>
-      <p-inputNumber inputId="personalVolume" [(ngModel)]="personalVolume" [min]="0"> </p-inputNumber>
-      <label for="parentId">Miembro padre</label>
-      <p-dropdown [options]="members" [(ngModel)]="selectedParentId" placeholder="Seleccionar" id="parentId"
-        [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
+<p-dialog header="{{isEdit ? 'Editar' : 'Nuevo'}} miembro" [(visible)]="visible" [style]="{width: '30vw'}"
+  [modal]="true" [draggable]="false">
+  <form [formGroup]="formGroup">
+    <div class="card flex flex-wrap gap-3 p-fluid">
+      <div class="flex flex-column gap-2">
+        <label for="name">Nombre</label>
+        <input pInputText id="name" formControlName="name" />
+        <label for="personalVolume">VP</label>
+        <p-inputNumber inputId="personalVolume" formControlName="personalVolume" [min]="0"> </p-inputNumber>
+        <label for="parentId">Miembro padre</label>
+        <p-dropdown [options]="members" formControlName="parentId" placeholder="Seleccionar" id="parentId"
+          [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
+      </div>
     </div>
-  </div>
+  </form>
+
   <ng-template pTemplate="footer">
-    <p-button (click)="editTeamMember()" label="Guardar"></p-button>
+    <p-button (onClick)="isEdit ? editTeamMember() : addTeamMember()" label="Guardar"
+      [disabled]="!formGroup.valid"></p-button>
   </ng-template>
 </p-dialog>
 

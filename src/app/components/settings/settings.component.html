@@ -1,31 +1,33 @@
 <div class="card">
-  <div class="flex flex-wrap gap-3 p-fluid">
-    <div class="flex-auto">
-      <label for="name">Nombre</label>
-      <input pInputText id="name" [(ngModel)]="settingsModel.name" />
+  <form [formGroup]="formGroup" (ngSubmit)="saveSettings()">
+    <div class="flex flex-wrap gap-3 p-fluid">
+      <div class="flex-auto">
+        <label for="name">Nombre</label>
+        <input pInputText id="name" formControlName="name" />
+      </div>
+      <div class="flex-auto">
+        <label for="shoppingDrCTuna">Compras Dr C Tuna</label>
+        <p-inputNumber inputId="shoppingDrCTuna" formControlName="shoppingDrCTuna" mode="decimal" [min]="0"
+          [maxFractionDigits]="2"> </p-inputNumber>
+      </div>
+      <div class="flex-auto">
+        <label for="shoppingFarmasi">Compras Farmasi</label>
+        <p-inputNumber formControlName="shoppingFarmasi" mode="decimal" inputId="shoppingFarmasi" [min]="0"
+          [maxFractionDigits]="2">
+        </p-inputNumber>
+      </div>
+      <div class="flex-auto">
+        <label for="salesDrCTuna">Ventas Dr C Tuna</label>
+        <p-inputNumber formControlName="salesDrCTuna" inputId="salesDrCTuna" mode="decimal" [min]="0"
+          [maxFractionDigits]="2"> </p-inputNumber>
+      </div>
+      <div class="flex-auto">
+        <label for="salesFarmasi">Ventas Farmasi</label>
+        <p-inputNumber formControlName="salesFarmasi" inputId="salesFarmasi" mode="decimal" [min]="0"
+          [maxFractionDigits]="2">
+        </p-inputNumber>
+      </div>
+      <p-button label="Guardar" type="submit" [disabled]="!formGroup.valid"></p-button>
     </div>
-    <div class="flex-auto">
-      <label for="shoppingDrCTuna">Compras Dr C Tuna</label>
-      <p-inputNumber inputId="shoppingDrCTuna" [(ngModel)]="settingsModel.shopping.drCTuna" mode="decimal" [min]="0"
-        [maxFractionDigits]="2"> </p-inputNumber>
-    </div>
-    <div class="flex-auto">
-      <label for="shoppingFarmasi">Compras Farmasi</label>
-      <p-inputNumber [(ngModel)]="settingsModel.shopping.farmasi" mode="decimal" inputId="shoppingFarmasi" [min]="0"
-        [maxFractionDigits]="2">
-      </p-inputNumber>
-    </div>
-    <div class="flex-auto">
-      <label for="salesDrCTuna">Ventas Dr C Tuna</label>
-      <p-inputNumber [(ngModel)]="settingsModel.sales.drCTuna" inputId="salesDrCTuna" mode="decimal" [min]="0"
-        [maxFractionDigits]="2"> </p-inputNumber>
-    </div>
-    <div class="flex-auto">
-      <label for="salesFarmasi">Ventas Farmasi</label>
-      <p-inputNumber [(ngModel)]="settingsModel.sales.farmasi" inputId="salesFarmasi" mode="decimal" [min]="0"
-        [maxFractionDigits]="2">
-      </p-inputNumber>
-    </div>
-    <p-button label="Guardar" (onClick)="saveSettings()"></p-button>
-  </div>
+  </form>
 </div>

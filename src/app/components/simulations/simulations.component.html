@@ -1,6 +1,6 @@
 <br />
 <p-confirmDialog [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
-<p-button (click)="showDialog = true" label="Nueva simulación"></p-button>
+<p-button (click)="showDialog()" label="Nueva simulación"></p-button>
 <br />
 
 <div class="card">
@@ -80,15 +80,18 @@
 
 <br />
 
-<p-dialog header="Nueva simulación" [(visible)]="showDialog" [style]="{width: '30vw'}" [modal]="true"
-  [draggable]="false">
-  <div class="card flex flex-wrap gap-3 p-fluid">
-    <div class="flex flex-column gap-2">
-      <label for="name">Nombre</label>
-      <input pInputText id="name" [(ngModel)]="name" />
+<p-dialog header="Nueva simulación" [(visible)]="visible" [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
+  <form [formGroup]="formGroup">
+    <div class="card flex flex-wrap gap-3 p-fluid">
+      <div class="flex flex-column gap-2">
+        <label for="name">Nombre</label>
+        <input pInputText id="name" formControlName="name" />
+      </div>
     </div>
-  </div>
+  </form>
+
   <ng-template pTemplate="footer">
-    <p-button (click)="addSimulation()" label="Guardar"></p-button>
+    <p-button (click)="addSimulation()" label="Guardar" [disabled]="!formGroup.valid"></p-button>
   </ng-template>
+
 </p-dialog>
