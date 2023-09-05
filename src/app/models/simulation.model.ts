@@ -1,3 +1,5 @@
+import { MonthlyBonusModel } from "./monthly-bonus.model";
+
 export interface SimulationModel {
   id: string;
   name: string;
@@ -5,10 +7,7 @@ export interface SimulationModel {
   grupalVolume?: number;
   sidePoints?: number;
   titlePoints?: number;
-  personalBonus?: number;
-  grupalBonus?: number;
-  carBonus?: number;
-  leadershipBonusArr?: number[];
+  monthlyBonus?: MonthlyBonusModel;
   totalBonus?: number;
   creationDate: Date;
   lastUpdateDate: Date;

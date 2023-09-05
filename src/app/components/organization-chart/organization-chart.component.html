@@ -74,24 +74,6 @@
         <b>Puntos de Título:</b> {{selectedTreeNode.data.tp}}
       </p>
     </p-card>
-    <p-card header="Bonos Mensuales ({{totalBonus | currency}})" *ngIf="monthlyBonusModel">
-      <p class="m-0">
-        <b>Bono Personal:</b> {{monthlyBonusModel.personalBonus | currency}}
-      </p>
-      <p class="m-0">
-        <b>Bono de Grupo:</b> {{monthlyBonusModel.grupalBonus | currency}}
-      </p>
-      <p class="m-0" *ngIf="monthlyBonusModel.carBonus">
-        <b>Bono de Auto:</b> {{monthlyBonusModel.carBonus | currency}}
-      </p>
-      <p class="m-0" *ngIf="totalLeadershipBonus">
-        <b>Bono de Liderazgo:</b> {{totalLeadershipBonus | currency}}
-      </p>
-      <ul *ngIf="totalLeadershipBonus">
-        <li *ngFor="let leadershipBonus of monthlyBonusModel.leadershipBonusArr; let i = index">
-          <b>Gen {{i + 1}}:</b> {{leadershipBonus | currency}}
-        </li>
-      </ul>
-    </p-card>
+    <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" *ngIf="monthlyBonusModel"></app-monthly-bonuses>
   </div>
 </p-dialog>

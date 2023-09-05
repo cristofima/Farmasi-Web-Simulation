@@ -29,8 +29,6 @@ export class OrganizationChartComponent implements OnInit {
   private selectedId!: string;
 
   monthlyBonusModel?: MonthlyBonusModel;
-  totalBonus = 0;
-  totalLeadershipBonus = 0;
 
   formGroup!: FormGroup;
 
@@ -85,13 +83,9 @@ export class OrganizationChartComponent implements OnInit {
     this.selectedId = treeNode.data.id;
     this.selectedTreeNode = treeNode;
     this.monthlyBonusModel = undefined;
-    this.totalLeadershipBonus = 0;
-    this.totalBonus = 0;
     if (treeNode.data.bonification == 0) return;
 
     this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(treeNode);
-    this.totalLeadershipBonus = this.monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
-    this.totalBonus = this.monthlyBonusModel.personalBonus + this.monthlyBonusModel.grupalBonus + this.monthlyBonusModel.carBonus + this.totalLeadershipBonus;
   }
 
   editTeamMember() {

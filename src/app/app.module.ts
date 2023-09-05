@@ -10,6 +10,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { OrganizationChartComponent } from './components/organization-chart/organization-chart.component';
 import { SimulationsComponent } from './components/simulations/simulations.component';
 import { SimulationDetailsComponent } from './components/simulation-details/simulation-details.component';
+import { MonthlyBonusesComponent } from './components/monthly-bonuses/monthly-bonuses.component';
 
 import { TabMenuModule } from 'primeng/tabmenu';
 import { OrganizationChartModule } from 'primeng/organizationchart';
@@ -32,7 +33,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     SettingsComponent,
     OrganizationChartComponent,
     SimulationsComponent,
-    SimulationDetailsComponent
+    SimulationDetailsComponent,
+    MonthlyBonusesComponent
   ],
   imports: [
     BrowserModule,

@@ -52,25 +52,8 @@
       <tr>
         <td colspan="9">
           <div class="p-3">
-            <p-card header="Bonos Mensuales">
-              <p class="m-0">
-                <b>Bono Personal:</b> {{details?.personalBonus | currency}}
-              </p>
-              <p class="m-0">
-                <b>Bono de Grupo:</b> {{details?.grupalBonus | currency}}
-              </p>
-              <p class="m-0">
-                <b>Bono de Auto:</b> {{details?.carBonus | currency}}
-              </p>
-              <p class="m-0">
-                <b>Bono de Liderazgo:</b>
-              </p>
-              <ul>
-                <li *ngFor="let leadershipBonus of details?.leadershipBonusArr; let i = index">
-                  <b>Gen {{i + 1}}:</b> {{leadershipBonus | currency}}
-                </li>
-              </ul>
-            </p-card>
+            <app-monthly-bonuses *ngIf="details.monthlyBonus"
+              [monthlyBonus]="details.monthlyBonus"></app-monthly-bonuses>
           </div>
         </td>
       </tr>

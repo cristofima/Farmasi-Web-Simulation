@@ -24,8 +24,6 @@ export class HomeComponent implements OnInit {
   title!: string;
 
   monthlyBonusModel!: MonthlyBonusModel;
-  totalBonus = 0;
-  totalLeadershipBonus = 0;
 
   ngOnInit(): void {
     this.settingsModel = this.settingsService.getSettings();
@@ -48,8 +46,6 @@ export class HomeComponent implements OnInit {
     this.titlePoints = tree[0].data.tp;
 
     this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
-    this.totalLeadershipBonus = this.monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
-    this.totalBonus = this.monthlyBonusModel.personalBonus + this.monthlyBonusModel.grupalBonus + this.monthlyBonusModel.carBonus + this.totalLeadershipBonus;
   }
 
 }

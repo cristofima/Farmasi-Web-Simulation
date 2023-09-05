@@ -64,10 +64,8 @@ export class SimulationsService {
 
     let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
     let totalLeadershipBonus = monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
-    simulation.personalBonus = monthlyBonusModel.personalBonus;
-    simulation.grupalBonus = monthlyBonusModel.grupalBonus;
-    simulation.carBonus = monthlyBonusModel.carBonus;
-    simulation.leadershipBonusArr = monthlyBonusModel.leadershipBonusArr;
+
+    simulation.monthlyBonus = monthlyBonusModel;
     simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.grupalBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
 
     if (isAddAction) simulations.push(simulation);
