@@ -1,6 +1,6 @@
 <br />
 <p-confirmDialog [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
-<p-button (click)="showDialog()" label="Nueva simulación"></p-button>
+<p-button (click)="showDialog()" label="Nueva simulación" [disabled]="!enableAddButton"></p-button>
 <br />
 
 <div class="card">
@@ -69,6 +69,9 @@
       <div class="flex flex-column gap-2">
         <label for="name">Nombre</label>
         <input pInputText id="name" formControlName="name" />
+        <label for="team">Copiar de</label>
+        <p-dropdown [options]="groupedSimulations" formControlName="team" placeholder="Seleccionar" [group]="true"
+          id="team" [filter]="true" appendTo="body"></p-dropdown>
       </div>
     </div>
   </form>

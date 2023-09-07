@@ -13,9 +13,9 @@ export class SimulationsService {
 
   private storageKey = 'simulations';
 
-  addSimulation(simulation: SimulationModel) {
+  addSimulation(simulation: SimulationModel, simulationId?: string) {
     let simulations = this.getSimulations();
-    this.addOrUpdateSimulation(simulation, simulations);
+    this.addOrUpdateSimulation(simulation, simulations, true, simulationId);
   }
 
   getSimulations() {
@@ -41,10 +41,15 @@ export class SimulationsService {
     this.addOrUpdateSimulation(simulation, simulations, false);
   }
 
-  private addOrUpdateSimulation(simulation: SimulationModel, simulations: SimulationModel[], isAddAction = true) {
+  private addOrUpdateSimulation(simulation: SimulationModel, simulations: SimulationModel[], isAddAction = true, simulationId?: string) {
     let teamMembers: TeamMemberModel[] = [];
     if (isAddAction) {
-      this.teamMemberService.setStorageKey('teamMembers');
+      if (simulationId) {
+        this.teamMemberService.setStorageKey(`simulation-${simulationId}`);
+      } else {
+        this.teamMemberService.setStorageKey('teamMembers');
+      }
+
       teamMembers = this.teamMemberService.getTeamMembers();
       localStorage.setItem(`simulation-${simulation.id}`, JSON.stringify(teamMembers));
     } else {
