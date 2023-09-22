@@ -1,6 +1,8 @@
 <p-confirmDialog [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
 <br />
-<p-button (click)="showDialog()" label="Añadir miembro"></p-button>
+<div class="flex justify-content-center">
+  <p-button (click)="showDialog()" label="Añadir miembro"></p-button>
+</div>
 <br />
 <div class="card">
   <div class="flex flex-column md:flex-row gap-5">
@@ -54,26 +56,10 @@
 <p-dialog header="Detalles de {{selectedTreeNode?.data?.name}}" [(visible)]="showDetailsDialog"
   [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
   <div class="card flex flex-wrap gap-3 p-fluid">
-    <p-card header="Equipo" *ngIf="selectedTreeNode">
-      <p class="m-0">
-        <b>Volumen Personal (VP):</b> {{selectedTreeNode.data.pv}}
-      </p>
-      <p class="m-0">
-        <b>Volumen Grupal (VG):</b> {{selectedTreeNode.data.gv}}
-      </p>
-      <p class="m-0">
-        <b>% Bonificación:</b> {{selectedTreeNode.data.bonification}} %
-      </p>
-      <p class="m-0">
-        <b>Título:</b> {{selectedTreeNode.data.title}}
-      </p>
-      <p class="m-0" *ngIf="selectedTreeNode.data.sp">
-        <b>Puntos Laterales:</b> {{selectedTreeNode.data.sp}}
-      </p>
-      <p class="m-0" *ngIf="selectedTreeNode.data.tp">
-        <b>Puntos de Título:</b> {{selectedTreeNode.data.tp}}
-      </p>
-    </p-card>
+    <app-team-points *ngIf="selectedTreeNode" [personalVolume]="selectedTreeNode.data.pv"
+      [grupalVolume]="selectedTreeNode.data.gv" [bonusPercentage]="selectedTreeNode.data.bonification"
+      [title]="selectedTreeNode.data.title" [sidePoints]="selectedTreeNode.data.sp"
+      [titlePoints]="selectedTreeNode.data.tp"></app-team-points>
     <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" *ngIf="monthlyBonusModel"></app-monthly-bonuses>
   </div>
 </p-dialog>

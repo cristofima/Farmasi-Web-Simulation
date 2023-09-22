@@ -14,8 +14,6 @@
         <th pSortableColumn="grupalVolumne">Volumen Grupal <p-sortIcon field="grupalVolumne"></p-sortIcon></th>
         <th pSortableColumn="sidePoints">Puntos Laterales <p-sortIcon field="sidePoints"></p-sortIcon>
         </th>
-        <th pSortableColumn="titlePoints">Puntos de Título <p-sortIcon field="titlePoints"></p-sortIcon>
-        </th>
         <th pSortableColumn="totalBonus">Bono Mensual <p-sortIcon field="totalBonus"></p-sortIcon></th>
         <th pSortableColumn="creationDate">Fecha Creación <p-sortIcon field="creationDate"></p-sortIcon>
         </th>
@@ -34,14 +32,13 @@
         <td>{{simulation.title}}</td>
         <td>{{simulation.grupalVolume}}</td>
         <td>{{simulation.sidePoints}}</td>
-        <td>{{simulation.titlePoints}}</td>
         <td>{{simulation.totalBonus | currency}}</td>
         <td>{{simulation.creationDate | date: 'medium' }}</td>
         <td>{{simulation.lastUpdateDate | date: 'medium'}}</td>
         <td>
           <div class="flex flex-wrap gap-3 justify-content-center">
-            <p-button (onClick)="goToDetails(simulation.id)" icon="pi pi-folder" styleClass="p-button-info"
-              title="Editar"></p-button>
+            <p-button (onClick)="goToDetails(simulation.id)" icon="pi pi-folder" styleClass="p-button-secondary"
+              title="Ver miembros"></p-button>
             <p-button (onClick)="deleteSimulation(simulation)" icon="pi pi-trash" title="Eliminar"
               styleClass="p-button-danger"></p-button>
           </div>
@@ -52,9 +49,20 @@
       <tr>
         <td colspan="9">
           <div class="p-3">
+            <app-team-points [personalVolume]="details.personalVolume" [grupalVolume]="details.grupalVolume"
+              [title]="details.title" [bonusPercentage]="details.bonusPercentage" [sidePoints]="details.sidePoints"
+              [titlePoints]="details.titlePoints"></app-team-points>
+            <br />
             <app-monthly-bonuses *ngIf="details.monthlyBonus"
               [monthlyBonus]="details.monthlyBonus"></app-monthly-bonuses>
           </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-details>
+      <tr>
+        <td colspan="9" style="text-align: center;">
+          No hay registros
         </td>
       </tr>
     </ng-template>

@@ -62,6 +62,8 @@ export class SimulationsService {
 
     TeamMemberUtil.calculateFields(tree);
     simulation.title = tree[0].data.title;
+    simulation.personalVolume = tree[0].data.pv;
+    simulation.bonusPercentage = tree[0].data.bonification;
     simulation.grupalVolume = tree[0].data.gv;
     simulation.sidePoints = tree[0].data.sp;
     simulation.titlePoints = tree[0].data.tp;

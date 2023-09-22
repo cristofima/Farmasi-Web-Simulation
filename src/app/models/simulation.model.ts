@@ -4,6 +4,8 @@ export interface SimulationModel {
   id: string;
   name: string;
   title?: string;
+  personalVolume?: number;
+  bonusPercentage?: number
   grupalVolume?: number;
   sidePoints?: number;
   titlePoints?: number;

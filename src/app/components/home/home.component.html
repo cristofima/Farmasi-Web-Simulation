@@ -11,23 +11,8 @@
 
 <br />
 
-<p-card header="Equipo">
-  <p class="m-0">
-    <b>Volumen Grupal (VG):</b> {{grupalVolume}}
-  </p>
-  <p class="m-0">
-    <b>% Bonificación:</b> {{bonusPercentage}} %
-  </p>
-  <p class="m-0">
-    <b>Título:</b> {{title}}
-  </p>
-  <p class="m-0">
-    <b>Puntos Laterales:</b> {{sidePoints}}
-  </p>
-  <p class="m-0">
-    <b>Puntos de Título:</b> {{titlePoints}}
-  </p>
-</p-card>
+<app-team-points [grupalVolume]="grupalVolume" [bonusPercentage]="bonusPercentage" [title]="title"
+  [sidePoints]="sidePoints" [titlePoints]="titlePoints"></app-team-points>
 
 <br />
 
