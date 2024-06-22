@@ -20,8 +20,9 @@
           <div class="text-center">
             <div class="font-bold">{{ node.data.name }}</div>
             <div>{{ node.data.title }} {{ node.data.bonification }}%</div>
-            <p><b>VP:</b> {{ node.data.pv }}</p>
-            <p><b>VG:</b> {{ node.data.gv }}</p>
+            <p-tag *ngIf="node.data.isNew" value="Nuevo" [rounded]="true" severity="success"></p-tag>
+            <p><b>VP:</b> {{ node.data.pv | number:'1.0-2' }}</p>
+            <p><b>VG:</b> {{ node.data.gv | number:'1.0-2' }}</p>
           </div>
         </ng-template>
       </p-organizationChart>
@@ -38,8 +39,13 @@
       <div class="flex flex-column gap-2">
         <label for="name">Nombre</label>
         <input pInputText id="name" formControlName="name" />
+        <p-checkbox
+            [binary]="true"
+            label="¿Es nuevo?"
+            formControlName="isNew" />
         <label for="personalVolume">VP</label>
-        <p-inputNumber inputId="personalVolume" formControlName="personalVolume" [min]="0"> </p-inputNumber>
+        <p-inputNumber inputId="personalVolume" formControlName="personalVolume" [min]="0.00"
+          mode="decimal" [maxFractionDigits]="2" [showButtons]="true" > </p-inputNumber>
         <label for="parentId">Miembro padre</label>
         <p-dropdown [options]="members" formControlName="parentId" placeholder="Seleccionar" id="parentId"
           [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
@@ -57,7 +63,7 @@
   [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
   <div class="card flex flex-wrap gap-3 p-fluid">
     <app-team-points *ngIf="selectedTreeNode" [personalVolume]="selectedTreeNode.data.pv"
-      [grupalVolume]="selectedTreeNode.data.gv" [bonusPercentage]="selectedTreeNode.data.bonification"
+      [groupVolume]="selectedTreeNode.data.gv" [bonusPercentage]="selectedTreeNode.data.bonification"
       [title]="selectedTreeNode.data.title" [sidePoints]="selectedTreeNode.data.sp"
       [titlePoints]="selectedTreeNode.data.tp"></app-team-points>
     <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" *ngIf="monthlyBonusModel"></app-monthly-bonuses>

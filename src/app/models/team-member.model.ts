@@ -3,4 +3,5 @@ export interface TeamMemberModel {
   parentId?: string;
   name: string;
   personalVolume: number;
+  isNew?: boolean;
 }

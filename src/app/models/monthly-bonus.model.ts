@@ -1,6 +1,8 @@
 export interface MonthlyBonusModel {
   personalBonus: number;
-  grupalBonus: number;
+  groupBonus: number;
   leadershipBonusArr: number[];
   carBonus: number;
+  buildingBonus: number;
+  powerBonus: number;
 }

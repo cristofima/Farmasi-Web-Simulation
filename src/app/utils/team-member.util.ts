@@ -2,9 +2,15 @@ import { TreeNode } from "primeng/api";
 import { TeamMemberModel } from "../models/team-member.model";
 import { MonthlyBonusModel } from "../models/monthly-bonus.model";
 import { TitleEnum, TitlePointEnum } from "../enums/title.enum";
+import { BUILDING_BONUS_AMOUNT_PER_GROUP, GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS, MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS, MIN_PV_TO_BE_ACTIVE, POWER_BONUS_AMOUNT } from "../constants/farmasi.constant";
 
 export class TeamMemberUtil {
 
+  /**
+   * Convert a list of team members into a tree structure.
+   * @param teamMembers - Array of team members.
+   * @returns Tree structure of team members.
+   */
   static listToTree(teamMembers: TeamMemberModel[]) {
     let treeSearchResponses: TreeNode[] = [];
     teamMembers.map((searchResponse) => {
@@ -18,6 +24,7 @@ export class TeamMemberUtil {
           title: null,
           bonification: 0,
           pv: searchResponse.personalVolume,
+          isNew: !!searchResponse.isNew,
           gv: 0,
           sp: 0,
           tp: 0
@@ -102,7 +109,7 @@ export class TeamMemberUtil {
       node.data.bonification = 22;
     } else if (node.data.gv >= 5000) {
       node.data.bonification = 25;
-      title = TitleEnum.LiderVirtual;
+      title = TitleEnum.VirtualManager;
 
       if (!node.children) return;
 
@@ -125,23 +132,23 @@ export class TeamMemberUtil {
       node.data.tp = titlePoints;
 
       if (node.data.sp >= 10000 && lidersAt25 >= 30 && node.data.tp >= 240) {
-        title = TitleEnum.JefeEjectutivo;
+        title = TitleEnum.ExecutiveBossDirector;
       } else if (node.data.sp >= 10000 && lidersAt25 >= 30 && node.data.tp >= 120) {
-        title = TitleEnum.JefePresidente;
+        title = TitleEnum.BossDirector;
       } else if (node.data.sp >= 10000 && lidersAt25 >= 20 && node.data.tp >= 60) {
-        title = TitleEnum.Presidente;
+        title = TitleEnum.President;
       } else if (node.data.sp >= 10000 && lidersAt25 >= 16 && node.data.tp >= 30) {
-        title = TitleEnum.Vicepresidente;
+        title = TitleEnum.VicePresident;
       } else if (node.data.sp >= 5000 && lidersAt25 >= 12 && node.data.tp >= 15) {
-        title = TitleEnum.DirectorDiamante;
+        title = TitleEnum.DiamondDirector;
       } else if (node.data.sp >= 5000 && lidersAt25 >= 8) {
-        title = TitleEnum.DirectorEsmeralda;
+        title = TitleEnum.EmeraldDirector;
       } else if (node.data.sp >= 2500 && lidersAt25 >= 4) {
-        title = TitleEnum.DirectorPlatino;
+        title = TitleEnum.PlatinumDirector;
       } else if (node.data.sp >= 2500 && lidersAt25 >= 2) {
-        title = TitleEnum.DirectorOro;
+        title = TitleEnum.GoldenDirector;
       } else if (node.data.sp >= 1500 && lidersAt25 >= 1) {
-        title = TitleEnum.DirectorBronce;
+        title = TitleEnum.BronzeDirector;
       } else if (node.data.sp >= 1500) {
         title = TitleEnum.Director;
       }
@@ -152,40 +159,58 @@ export class TeamMemberUtil {
 
   static calculateMonthlyBonus(treeNode: TreeNode): MonthlyBonusModel {
     let personalBonus = treeNode.data.pv * treeNode.data.bonification / 100;
-    let grupalBonus = 0;
+    let groupBonus = 0;
     let leadershipBonusArr: number[] = [];
     let carBonus = 0;
+    let buildingBonus = 0;
+    let powerBonus = 0;
 
     if (treeNode.children) {
       let myBonification = treeNode.data.bonification;
-      grupalBonus = treeNode.children.reduce((acc, child) => acc + child.data.gv * (myBonification - child.data.bonification) / 100, 0);
+      groupBonus = treeNode.children.reduce((acc, child) => acc + child.data.gv * (myBonification - child.data.bonification) / 100, 0);
       carBonus = this.getCarBonus(treeNode);
+
+      const totalNewActiveBI = treeNode.children.reduce((acc, child) => (child.data.isNew && child.data.pv >= MIN_PV_TO_BE_ACTIVE) ? acc + 1 : acc, 0);
+      
+      if(totalNewActiveBI >= MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS) powerBonus = POWER_BONUS_AMOUNT;
+      if(totalNewActiveBI >= GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS){
+        buildingBonus = Math.floor(totalNewActiveBI / GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS) * BUILDING_BONUS_AMOUNT_PER_GROUP;
+      }
 
       if (treeNode.data.gv >= 5000 && treeNode.data.sp >= 1500) {
         let lpByGen = this.getLeadershipPercentageByGeneration(treeNode.data.title);
-        let sumGrupalVolumeArr: number[] = [];
+        let sumGroupVolumeArr: number[] = [];
 
         lpByGen.forEach((_, index) => {
-          sumGrupalVolumeArr.push(this.getSumGrupalVolumeByGeneration(treeNode, index + 1));
+          sumGroupVolumeArr.push(this.getSumGroupVolumeByGeneration(treeNode, index + 1));
         });
 
-        for (var i = 0; i < sumGrupalVolumeArr.length - 1; i++) {
-          leadershipBonusArr.push((sumGrupalVolumeArr[i] - sumGrupalVolumeArr[i + 1]) * lpByGen[i] / 100);
+        for (var i = 0; i < sumGroupVolumeArr.length - 1; i++) {
+          leadershipBonusArr.push((sumGroupVolumeArr[i] - sumGroupVolumeArr[i + 1]) * lpByGen[i] / 100);
         }
       }
     }
 
-    return { personalBonus, grupalBonus, leadershipBonusArr, carBonus };
+    const monthlyBonus: MonthlyBonusModel = {
+      personalBonus,
+      groupBonus,
+      leadershipBonusArr,
+      carBonus,
+      buildingBonus,
+      powerBonus
+    };
+
+    return monthlyBonus;
   }
 
-  private static getSumGrupalVolumeByGeneration(treeNode: TreeNode, targetGeneration: number, currentGeneration: number = 1): number {
+  private static getSumGroupVolumeByGeneration(treeNode: TreeNode, targetGeneration: number, currentGeneration: number = 1): number {
     if (currentGeneration === targetGeneration) {
       return treeNode.children?.reduce((acc, child) => acc + child.data.gv, 0) as number;
     }
 
     let sum = 0;
     treeNode.children?.forEach(child => {
-      sum += this.getSumGrupalVolumeByGeneration(child, targetGeneration, currentGeneration + 1);
+      sum += this.getSumGroupVolumeByGeneration(child, targetGeneration, currentGeneration + 1);
     });
 
     return sum;
@@ -194,23 +219,23 @@ export class TeamMemberUtil {
   private static getLeadershipPercentageByGeneration(title: string) {
     if (title == TitleEnum.Director) {
       return [4, 3, 2, 1.5, 0];
-    } else if (title == TitleEnum.DirectorBronce) {
+    } else if (title == TitleEnum.BronzeDirector) {
       return [4.5, 3.25, 2.25, 1.75, 0];
-    } else if (title == TitleEnum.DirectorOro) {
+    } else if (title == TitleEnum.GoldenDirector) {
       return [5, 3.5, 2.5, 2, 0];
-    } else if (title == TitleEnum.DirectorPlatino) {
+    } else if (title == TitleEnum.PlatinumDirector) {
       return [5.5, 4, 2.75, 2.2, 0];
-    } else if (title == TitleEnum.DirectorEsmeralda) {
+    } else if (title == TitleEnum.EmeraldDirector) {
       return [6, 4.5, 3, 2.5, 0];
-    } else if (title == TitleEnum.DirectorDiamante) {
+    } else if (title == TitleEnum.DiamondDirector) {
       return [6.5, 5, 3.25, 2.75, 1.5, 0];
-    } else if (title == TitleEnum.Vicepresidente) {
+    } else if (title == TitleEnum.VicePresident) {
       return [7, 5.5, 3.5, 3, 1.75, 0];
-    } else if (title == TitleEnum.Presidente) {
+    } else if (title == TitleEnum.President) {
       return [7.5, 6, 3.75, 3.25, 2, 0.75, 0];
-    } else if (title == TitleEnum.JefePresidente) {
+    } else if (title == TitleEnum.BossDirector) {
       return [8, 6.5, 4, 3.5, 2.25, 1, 0];
-    } else if (title == TitleEnum.JefeEjectutivo) {
+    } else if (title == TitleEnum.ExecutiveBossDirector) {
       return [8.5, 7, 4.25, 3.75, 2.5, 1.25, 0.5, 0];
     }
 
@@ -220,21 +245,21 @@ export class TeamMemberUtil {
   private static getCarBonus(treeNode: TreeNode) {
     let title = treeNode.data.title;
 
-    if (title == TitleEnum.DirectorOro) {
+    if (title == TitleEnum.GoldenDirector) {
       return 350;
-    } else if (title == TitleEnum.DirectorPlatino) {
+    } else if (title == TitleEnum.PlatinumDirector) {
       return 400;
-    } else if (title == TitleEnum.DirectorEsmeralda) {
+    } else if (title == TitleEnum.EmeraldDirector) {
       return 450;
-    } else if (title == TitleEnum.DirectorDiamante) {
+    } else if (title == TitleEnum.DiamondDirector) {
       return 500;
-    } else if (title == TitleEnum.Vicepresidente) {
+    } else if (title == TitleEnum.VicePresident) {
       return 550;
-    } else if (title == TitleEnum.Presidente) {
+    } else if (title == TitleEnum.President) {
       return 600;
-    } else if (title == TitleEnum.JefePresidente) {
+    } else if (title == TitleEnum.BossDirector) {
       return 650;
-    } else if (title == TitleEnum.JefeEjectutivo) {
+    } else if (title == TitleEnum.ExecutiveBossDirector) {
       return 700;
     }
 

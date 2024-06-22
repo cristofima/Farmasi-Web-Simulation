@@ -64,7 +64,7 @@ export class SimulationsService {
     simulation.title = tree[0].data.title;
     simulation.personalVolume = tree[0].data.pv;
     simulation.bonusPercentage = tree[0].data.bonification;
-    simulation.grupalVolume = tree[0].data.gv;
+    simulation.groupVolume = tree[0].data.gv;
     simulation.sidePoints = tree[0].data.sp;
     simulation.titlePoints = tree[0].data.tp;
     if (!isAddAction) simulation.lastUpdateDate = new Date();
@@ -73,7 +73,7 @@ export class SimulationsService {
     let totalLeadershipBonus = monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
 
     simulation.monthlyBonus = monthlyBonusModel;
-    simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.grupalBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
+    simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.groupBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
 
     if (isAddAction) simulations.push(simulation);
     localStorage.setItem(this.storageKey, JSON.stringify(simulations));

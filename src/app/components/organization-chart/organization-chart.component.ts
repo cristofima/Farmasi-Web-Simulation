@@ -18,7 +18,7 @@ export class OrganizationChartComponent implements OnInit {
 
   @Input() storageKey!: string;
   @Output("updateSimulationDetails") updateSimulationDetailsEvent = new EventEmitter<void>();
-  private isSumulation = false;
+  private isSimulation = false;
 
   data: TreeNode[] = [];
   visible = false;
@@ -33,13 +33,14 @@ export class OrganizationChartComponent implements OnInit {
   formGroup!: FormGroup;
 
   ngOnInit(): void {
-    if (this.storageKey) this.isSumulation = this.storageKey.includes('simulation');
+    if (this.storageKey) this.isSimulation = this.storageKey.includes('simulation');
     this.teamMemberService.setStorageKey(this.storageKey);
 
     this.formGroup = this.formBuilder.group({
       name: new FormControl('', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(25)])),
       personalVolume: new FormControl(0, Validators.compose([Validators.required, Validators.min(0)])),
-      parentId: new FormControl(null, Validators.compose([Validators.required]))
+      parentId: new FormControl(null, Validators.compose([Validators.required])),
+      isNew: new FormControl(false)
     });
 
     this.resetOrganizationChart();
@@ -57,13 +58,14 @@ export class OrganizationChartComponent implements OnInit {
       id: Guid.newGuid().toString(),
       parentId: this.formGroup.controls['parentId'].value,
       name: this.formGroup.controls['name'].value,
+      isNew: this.formGroup.controls['isNew'].value,
       personalVolume: this.formGroup.controls['personalVolume'].value
     };
 
     this.teamMemberService.addTeamMember(newTeamMember);
     this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${newTeamMember.name} añadido` });
     this.resetOrganizationChart();
-    if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
+    if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
   }
 
   loadEditDialog(treeNode: TreeNode) {
@@ -74,7 +76,8 @@ export class OrganizationChartComponent implements OnInit {
     this.formGroup.setValue({
       name: treeNode.data.name,
       personalVolume: treeNode.data.pv,
-      parentId: treeNode.data.parentId
+      parentId: treeNode.data.parentId,
+      isNew: treeNode.data.isNew
     });
   }
 
@@ -93,11 +96,12 @@ export class OrganizationChartComponent implements OnInit {
     let name = this.formGroup.controls['name'].value;
     let personalVolume = this.formGroup.controls['personalVolume'].value;
     let parentId = this.formGroup.controls['parentId'].value;
+    let isNew = this.formGroup.controls['isNew'].value;
 
-    this.teamMemberService.editTeamMember(this.selectedId, name, personalVolume, parentId);
+    this.teamMemberService.editTeamMember(this.selectedId, name, personalVolume, parentId, isNew);
     this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} actualizado` });
     this.resetOrganizationChart();
-    if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
+    if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
   }
 
   deleteTeamMember(treeNode: TreeNode) {
@@ -109,7 +113,7 @@ export class OrganizationChartComponent implements OnInit {
       accept: () => {
         this.teamMemberService.deleteTeamMember(treeNode);
         this.resetOrganizationChart();
-        if (this.isSumulation) this.updateSimulationDetailsEvent.emit();
+        if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
         this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} eliminado` });
       }
     });

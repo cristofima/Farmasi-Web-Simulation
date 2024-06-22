@@ -1,9 +1,9 @@
 <p-card header="Equipo">
   <p class="m-0" *ngIf="personalVolume">
-    <b>Volumen Personal (VP):</b> {{personalVolume}}
+    <b>Volumen Personal (VP):</b> {{personalVolume | number:'1.0-2'}}
   </p>
   <p class="m-0">
-    <b>Volumen Grupal (VG):</b> {{grupalVolume}}
+    <b>Volumen Grupal (VG):</b> {{groupVolume | number:'1.0-2'}}
   </p>
   <p class="m-0">
     <b>Bonificación:</b> {{bonusPercentage}} %
@@ -12,9 +12,9 @@
     <b>Título:</b> {{title}}
   </p>
   <p class="m-0" *ngIf="sidePoints">
-    <b>Puntos Laterales:</b> {{sidePoints}}
+    <b>Puntos Laterales:</b> {{sidePoints | number:'1.0-2'}}
   </p>
   <p class="m-0" *ngIf="titlePoints">
-    <b>Puntos de Título:</b> {{titlePoints}}
+    <b>Puntos de Título:</b> {{titlePoints | number:'1.0-2'}}
   </p>
 </p-card>

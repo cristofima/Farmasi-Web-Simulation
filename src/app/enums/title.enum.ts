@@ -1,28 +1,28 @@
 export enum TitleEnum {
   BeautyInfluencer = "Beauty Influencer",
-  LiderVirtual = "Líder Virtual",
+  VirtualManager = "Líder Virtual",
   Director = "Director",
-  DirectorBronce = "Director Bronce",
-  DirectorOro = "Director Oro",
-  DirectorPlatino = "Director Platino",
-  DirectorEsmeralda = "Director Esmeralda",
-  DirectorDiamante = "Director Diamante",
-  Vicepresidente = "Vicepresidente",
-  Presidente = "Presidente",
-  JefePresidente = "Jefe de Presidente",
-  JefeEjectutivo = "Jefe Ejectutivo"
+  BronzeDirector = "Director Bronce",
+  GoldenDirector = "Director Oro",
+  PlatinumDirector = "Director Platino",
+  EmeraldDirector = "Director Esmeralda",
+  DiamondDirector = "Director Diamante",
+  VicePresident = "Vicepresidente",
+  President = "Presidente",
+  BossDirector = "Jefe de Presidente",
+  ExecutiveBossDirector = "Jefe Ejectutivo"
 }
 
 export enum TitlePointEnum {
-  LiderVirtual = 0.25,
+  VirtualManager = 0.25,
   Director = 1,
-  DirectorBronce = 1,
-  DirectorOro = 2.5,
-  DirectorPlatino = 4,
+  BronzeDirector = 1,
+  GoldenDirector = 2.5,
+  PlatinumDirector = 4,
   DirectorEsmeralda = 8,
-  DirectorDiamante = 12,
-  Vicepresidente = 16,
-  Presidente = 20,
-  JefePresidente = 30,
-  JefeEjectutivo = 40
+  DiamondDirector = 12,
+  VicePresident = 16,
+  President = 20,
+  BossDirector = 30,
+  ExecutiveBossDirector = 40
 }

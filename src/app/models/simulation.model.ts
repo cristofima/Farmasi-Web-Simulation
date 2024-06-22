@@ -6,7 +6,7 @@ export interface SimulationModel {
   title?: string;
   personalVolume?: number;
   bonusPercentage?: number
-  grupalVolume?: number;
+  groupVolume?: number;
   sidePoints?: number;
   titlePoints?: number;
   monthlyBonus?: MonthlyBonusModel;

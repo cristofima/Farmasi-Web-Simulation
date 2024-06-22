@@ -26,6 +26,8 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     ConfirmDialogModule,
     ToastModule,
     TableModule,
-    ScrollTopModule
+    ScrollTopModule,
+    CheckboxModule,
+    TagModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

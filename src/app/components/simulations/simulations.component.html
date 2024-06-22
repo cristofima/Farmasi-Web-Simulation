@@ -11,7 +11,7 @@
         <th style="width: 5rem"></th>
         <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
         <th pSortableColumn="title">Título <p-sortIcon field="title"></p-sortIcon></th>
-        <th pSortableColumn="grupalVolumne">Volumen Grupal <p-sortIcon field="grupalVolumne"></p-sortIcon></th>
+        <th pSortableColumn="groupVolume">Volumen Grupal <p-sortIcon field="groupVolume"></p-sortIcon></th>
         <th pSortableColumn="sidePoints">Puntos Laterales <p-sortIcon field="sidePoints"></p-sortIcon>
         </th>
         <th pSortableColumn="totalBonus">Bono Mensual <p-sortIcon field="totalBonus"></p-sortIcon></th>
@@ -30,7 +30,7 @@
         </td>
         <td>{{simulation.name}}</td>
         <td>{{simulation.title}}</td>
-        <td>{{simulation.grupalVolume}}</td>
+        <td>{{simulation.groupVolume}}</td>
         <td>{{simulation.sidePoints}}</td>
         <td>{{simulation.totalBonus | currency}}</td>
         <td>{{simulation.creationDate | date: 'medium' }}</td>
@@ -49,7 +49,7 @@
       <tr>
         <td colspan="9">
           <div class="p-3">
-            <app-team-points [personalVolume]="details.personalVolume" [grupalVolume]="details.grupalVolume"
+            <app-team-points [personalVolume]="details.personalVolume" [groupVolume]="details.groupVolume"
               [title]="details.title" [bonusPercentage]="details.bonusPercentage" [sidePoints]="details.sidePoints"
               [titlePoints]="details.titlePoints"></app-team-points>
             <br />

@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   private settingsModel!: SettingsModel;
   personalVolume = 0;
-  grupalVolume = 0;
+  groupVolume = 0;
   revenue = 0;
   bonusPercentage = 0
   sidePoints = 0;
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     TeamMemberUtil.calculateFields(tree);
     this.title = tree[0].data.title;
     this.bonusPercentage = tree[0].data.bonification;
-    this.grupalVolume = tree[0].data.gv;
+    this.groupVolume = tree[0].data.gv;
     this.sidePoints = tree[0].data.sp;
     this.titlePoints = tree[0].data.tp;
 

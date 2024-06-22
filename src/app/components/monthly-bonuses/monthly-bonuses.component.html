@@ -3,15 +3,21 @@
     <b>Bono Personal:</b> {{monthlyBonusModel.personalBonus | currency}}
   </p>
   <p class="m-0">
-    <b>Bono de Grupo:</b> {{monthlyBonusModel.grupalBonus | currency}}
+    <b>Bono de Grupo:</b> {{monthlyBonusModel.groupBonus | currency}}
+  </p>
+  <p class="m-0" *ngIf="monthlyBonusModel.buildingBonus">
+    <b>Bono de Construcción:</b> {{monthlyBonusModel.buildingBonus | currency}}
+  </p>
+  <p class="m-0" *ngIf="monthlyBonusModel.powerBonus">
+    <b>Power Bonus:</b> {{monthlyBonusModel.powerBonus | currency}}
   </p>
   <p class="m-0" *ngIf="monthlyBonusModel.carBonus">
     <b>Bono de Auto:</b> {{monthlyBonusModel.carBonus | currency}}
   </p>
-  <p class="m-0" *ngIf="totalLeadershipBonus">
+  <!-- <p class="m-0" *ngIf="totalLeadershipBonus">
     <b>Bono de Liderazgo:</b> {{totalLeadershipBonus | currency}}
-  </p>
-  <ul *ngIf="totalLeadershipBonus">
+  </p> -->
+  <ul *ngIf="monthlyBonusModel.leadershipBonusArr.length > 0">
     <li *ngFor="let leadershipBonus of monthlyBonusModel.leadershipBonusArr; let i = index">
       <b>Gen {{i + 1}}:</b> {{leadershipBonus | currency}}
     </li>
