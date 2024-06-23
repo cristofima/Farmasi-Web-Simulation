@@ -30,8 +30,8 @@
         </td>
         <td>{{simulation.name}}</td>
         <td>{{simulation.title}}</td>
-        <td>{{simulation.groupVolume}}</td>
-        <td>{{simulation.sidePoints}}</td>
+        <td>{{simulation.groupVolume | number:'1.0-2'}}</td>
+        <td>{{simulation.sidePoints | number:'1.0-2'}}</td>
         <td>{{simulation.totalBonus | currency}}</td>
         <td>{{simulation.creationDate | date: 'medium' }}</td>
         <td>{{simulation.lastUpdateDate | date: 'medium'}}</td>

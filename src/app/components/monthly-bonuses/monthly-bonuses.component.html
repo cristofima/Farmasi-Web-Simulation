@@ -14,12 +14,7 @@
   <p class="m-0" *ngIf="monthlyBonusModel.carBonus">
     <b>Bono de Auto:</b> {{monthlyBonusModel.carBonus | currency}}
   </p>
-  <!-- <p class="m-0" *ngIf="totalLeadershipBonus">
-    <b>Bono de Liderazgo:</b> {{totalLeadershipBonus | currency}}
-  </p> -->
-  <ul *ngIf="monthlyBonusModel.leadershipBonusArr.length > 0">
-    <li *ngFor="let leadershipBonus of monthlyBonusModel.leadershipBonusArr; let i = index">
-      <b>Gen {{i + 1}}:</b> {{leadershipBonus | currency}}
-    </li>
-  </ul>
+  <p class="m-0" *ngIf="monthlyBonusModel.leadershipBonusArr.length > 0">
+    <b>Bono de Liderazgo:</b> {{monthlyBonusModel.leadershipBonusArr | sum | currency}}
+  </p>
 </p-card>

@@ -28,6 +28,7 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TagModule } from 'primeng/tag';
+import { SumPipe } from './pipes/sum.pipe';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { TagModule } from 'primeng/tag';
     SimulationsComponent,
     SimulationDetailsComponent,
     MonthlyBonusesComponent,
-    TeamPointsComponent
+    TeamPointsComponent,
+    SumPipe
   ],
   imports: [
     BrowserModule,

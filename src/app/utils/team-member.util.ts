@@ -3,6 +3,7 @@ import { TeamMemberModel } from "../models/team-member.model";
 import { MonthlyBonusModel } from "../models/monthly-bonus.model";
 import { TitleEnum, TitlePointEnum } from "../enums/title.enum";
 import { BUILDING_BONUS_AMOUNT_PER_GROUP, GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS, MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS, MIN_PV_TO_BE_ACTIVE, POWER_BONUS_AMOUNT } from "../constants/farmasi.constant";
+import { TreeNodeUtil } from "./tree-node.util";
 
 export class TeamMemberUtil {
 
@@ -12,37 +13,33 @@ export class TeamMemberUtil {
    * @returns Tree structure of team members.
    */
   static listToTree(teamMembers: TeamMemberModel[]) {
-    let treeSearchResponses: TreeNode[] = [];
-    teamMembers.map((searchResponse) => {
-      let treeNode: TreeNode = {
-        type: 'person',
-        expanded: true,
-        data: {
-          id: searchResponse.id,
-          parentId: searchResponse.parentId,
-          name: searchResponse.name,
-          title: null,
-          bonification: 0,
-          pv: searchResponse.personalVolume,
-          isNew: !!searchResponse.isNew,
-          gv: 0,
-          sp: 0,
-          tp: 0
-        }
-      };
-
-      treeSearchResponses.push(treeNode)
-    });
-
-    const nest = (items: TreeNode[], id = undefined): TreeNode[] => {
-      return items
-        .filter((item: TreeNode) => item.data.parentId === id)
-        .map((item: TreeNode) => ({ ...item, children: nest(items, item.data.id) }));
-    };
-
-    return nest(treeSearchResponses);
+    const treeNodes: TreeNode[] = teamMembers.map(member => this.mapToTreeNode(member));
+    return TreeNodeUtil.nest(treeNodes);
   }
 
+  private static mapToTreeNode(member: TeamMemberModel): TreeNode {
+    return {
+      type: 'person',
+      expanded: true,
+      data: {
+        id: member.id,
+        parentId: member.parentId,
+        name: member.name,
+        title: null,
+        bonification: 0,
+        pv: member.personalVolume,
+        isNew: !!member.isNew,
+        gv: 0,
+        sp: 0,
+        tp: 0
+      }
+    };
+  }
+
+  /**
+   * Calculate additional fields such as GV, SP, and bonification for each node in the tree.
+   * @param tree - Tree structure of team members.
+   */
   static calculateFields(tree: TreeNode[]) {
     tree.forEach((node) => {
       if (node.children) {
@@ -171,9 +168,9 @@ export class TeamMemberUtil {
       carBonus = this.getCarBonus(treeNode);
 
       const totalNewActiveBI = treeNode.children.reduce((acc, child) => (child.data.isNew && child.data.pv >= MIN_PV_TO_BE_ACTIVE) ? acc + 1 : acc, 0);
-      
-      if(totalNewActiveBI >= MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS) powerBonus = POWER_BONUS_AMOUNT;
-      if(totalNewActiveBI >= GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS){
+
+      if (totalNewActiveBI >= MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS) powerBonus = POWER_BONUS_AMOUNT;
+      if (totalNewActiveBI >= GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS) {
         buildingBonus = Math.floor(totalNewActiveBI / GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS) * BUILDING_BONUS_AMOUNT_PER_GROUP;
       }
 

@@ -3,6 +3,7 @@ import { SimulationModel } from '../models/simulation.model';
 import { TeamMemberService } from './team-member.service';
 import { TeamMemberUtil } from '../utils/team-member.util';
 import { TeamMemberModel } from '../models/team-member.model';
+import { BonusUtil } from '../utils/bonus.util';
 
 @Injectable({
   providedIn: 'root'
@@ -70,10 +71,9 @@ export class SimulationsService {
     if (!isAddAction) simulation.lastUpdateDate = new Date();
 
     let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
-    let totalLeadershipBonus = monthlyBonusModel.leadershipBonusArr.reduce((a, b) => a + b, 0);
 
     simulation.monthlyBonus = monthlyBonusModel;
-    simulation.totalBonus = monthlyBonusModel.personalBonus + monthlyBonusModel.groupBonus + monthlyBonusModel.carBonus + totalLeadershipBonus;
+    simulation.totalBonus = BonusUtil.calculateTotalBonus(monthlyBonusModel);
 
     if (isAddAction) simulations.push(simulation);
     localStorage.setItem(this.storageKey, JSON.stringify(simulations));
