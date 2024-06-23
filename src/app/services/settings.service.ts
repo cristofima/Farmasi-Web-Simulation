@@ -22,14 +22,7 @@ export class SettingsService {
     return {
       id: Guid.newGuid().toString(),
       name: "",
-      shopping: {
-        drCTuna: 0,
-        farmasi: 0
-      },
-      sales: {
-        drCTuna: 0,
-        farmasi: 0
-      }
+      personalVolume: 0
     };
   }
 }

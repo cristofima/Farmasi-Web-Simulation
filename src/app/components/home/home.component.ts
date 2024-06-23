@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   private settingsModel!: SettingsModel;
   personalVolume = 0;
   groupVolume = 0;
-  revenue = 0;
   bonusPercentage = 0
   sidePoints = 0;
   titlePoints = 0;
@@ -31,8 +30,7 @@ export class HomeComponent implements OnInit {
   }
 
   private initData() {
-    this.personalVolume = this.settingsModel.shopping.drCTuna + this.settingsModel.shopping.farmasi + this.settingsModel.sales.drCTuna + this.settingsModel.sales.farmasi;
-    this.revenue = this.settingsModel.sales.drCTuna * 0.5 + this.settingsModel.sales.farmasi * 0.3;
+    this.personalVolume = this.settingsModel.personalVolume;
 
     this.teamMemberService.setStorageKey('teamMembers');
     let tree = TeamMemberUtil.listToTree(this.teamMemberService.getTeamMembers());

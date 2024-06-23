@@ -6,26 +6,9 @@
         <input pInputText id="name" formControlName="name" />
       </div>
       <div class="flex-auto">
-        <label for="shoppingDrCTuna">Compras Dr C Tuna</label>
-        <p-inputNumber inputId="shoppingDrCTuna" formControlName="shoppingDrCTuna" mode="decimal" [min]="0"
+        <label for="personalVolume">Volumen Personal</label>
+        <p-inputNumber inputId="personalVolume" formControlName="personalVolume" mode="decimal" [min]="0"
           [maxFractionDigits]="2"> </p-inputNumber>
-      </div>
-      <div class="flex-auto">
-        <label for="shoppingFarmasi">Compras Farmasi</label>
-        <p-inputNumber formControlName="shoppingFarmasi" mode="decimal" inputId="shoppingFarmasi" [min]="0"
-          [maxFractionDigits]="2">
-        </p-inputNumber>
-      </div>
-      <div class="flex-auto">
-        <label for="salesDrCTuna">Ventas Dr C Tuna</label>
-        <p-inputNumber formControlName="salesDrCTuna" inputId="salesDrCTuna" mode="decimal" [min]="0"
-          [maxFractionDigits]="2"> </p-inputNumber>
-      </div>
-      <div class="flex-auto">
-        <label for="salesFarmasi">Ventas Farmasi</label>
-        <p-inputNumber formControlName="salesFarmasi" inputId="salesFarmasi" mode="decimal" [min]="0"
-          [maxFractionDigits]="2">
-        </p-inputNumber>
       </div>
       <p-button label="Guardar" type="submit" [disabled]="!formGroup.valid"></p-button>
     </div>
