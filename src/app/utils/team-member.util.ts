@@ -57,11 +57,15 @@ export class TeamMemberUtil {
   private static setSidePoints(node: TreeNode) {
     if (!node.children) return;
 
-    let sidePoints = node.children.filter(f => f.data.bonification < 18).reduce((acc, child) => acc + child.data.gv, 0);
+    let sidePoints = node.children
+      .filter(child => child.data.bonification < 18)
+      .reduce((acc, child) => acc + child.data.gv, 0);
 
     [18, 22].forEach(bonification => {
       let maxChildID = this.getChildIDWithMaxGVAtXBonus(node, bonification);
-      sidePoints += node.children!.filter(f => f.data.bonification == bonification && f.data.id != maxChildID).reduce((acc, child) => acc + child.data.gv, 0);
+      sidePoints += node.children!
+        .filter(child => child.data.bonification === bonification && child.data.id !== maxChildID)
+        .reduce((acc, child) => acc + child.data.gv, 0);
     });
 
     node.data.sp = sidePoints;
@@ -90,22 +94,20 @@ export class TeamMemberUtil {
       title = TitleEnum.BeautyInfluencer;
     }
 
-    if (node.data.gv >= 200 && node.data.gv < 400) {
-      node.data.bonification = 3;
-    } else if (node.data.gv >= 400 && node.data.gv < 600) {
-      node.data.bonification = 6;
-    } else if (node.data.gv >= 600 && node.data.gv < 900) {
-      node.data.bonification = 9;
-    } else if (node.data.gv >= 900 && node.data.gv < 1400) {
-      node.data.bonification = 12;
-    } else if (node.data.gv >= 1400 && node.data.gv < 2200) {
-      node.data.bonification = 15;
-    } else if (node.data.gv >= 2200 && node.data.gv < 3600) {
-      node.data.bonification = 18;
-    } else if (node.data.gv >= 3600 && node.data.gv < 5000) {
-      node.data.bonification = 22;
-    } else if (node.data.gv >= 5000) {
-      node.data.bonification = 25;
+    const bonificationRanges = [
+      { min: 200, max: 400, bonification: 3 },
+      { min: 400, max: 600, bonification: 6 },
+      { min: 600, max: 900, bonification: 9 },
+      { min: 900, max: 1400, bonification: 12 },
+      { min: 1400, max: 2200, bonification: 15 },
+      { min: 2200, max: 3600, bonification: 18 },
+      { min: 3600, max: 5000, bonification: 22 },
+      { min: 5000, max: Infinity, bonification: 25 }
+    ];
+
+    const matchingRange = bonificationRanges.find(range => node.data.gv >= range.min && node.data.gv < range.max);
+    if (matchingRange) {
+      node.data.bonification = matchingRange.bonification;
       title = TitleEnum.VirtualManager;
 
       if (!node.children) return;
@@ -155,7 +157,7 @@ export class TeamMemberUtil {
   }
 
   static calculateMonthlyBonus(treeNode: TreeNode): MonthlyBonusModel {
-    let personalBonus = treeNode.data.pv * treeNode.data.bonification / 100;
+    const personalBonus = treeNode.data.pv * treeNode.data.bonification / 100;
     let groupBonus = 0;
     let leadershipBonusArr: number[] = [];
     let carBonus = 0;
@@ -163,32 +165,34 @@ export class TeamMemberUtil {
     let powerBonus = 0;
 
     if (treeNode.children) {
-      let myBonification = treeNode.data.bonification;
+      const myBonification = treeNode.data.bonification;
       groupBonus = treeNode.children.reduce((acc, child) => acc + child.data.gv * (myBonification - child.data.bonification) / 100, 0);
       carBonus = this.getCarBonus(treeNode);
 
       const totalNewActiveBI = treeNode.children.reduce((acc, child) => (child.data.isNew && child.data.pv >= MIN_PV_TO_BE_ACTIVE) ? acc + 1 : acc, 0);
 
-      if (totalNewActiveBI >= MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS) powerBonus = POWER_BONUS_AMOUNT;
+      if (totalNewActiveBI >= MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS) {
+        powerBonus = POWER_BONUS_AMOUNT;
+      }
       if (totalNewActiveBI >= GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS) {
         buildingBonus = Math.floor(totalNewActiveBI / GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS) * BUILDING_BONUS_AMOUNT_PER_GROUP;
       }
 
       if (treeNode.data.gv >= 5000 && treeNode.data.sp >= 1500) {
-        let lpByGen = this.getLeadershipPercentageByGeneration(treeNode.data.title);
-        let sumGroupVolumeArr: number[] = [];
+        const lpByGen = this.getLeadershipPercentageByGeneration(treeNode.data.title);
+        const sumGroupVolumeArr: number[] = [];
 
         lpByGen.forEach((_, index) => {
           sumGroupVolumeArr.push(this.getSumGroupVolumeByGeneration(treeNode, index + 1));
         });
 
-        for (var i = 0; i < sumGroupVolumeArr.length - 1; i++) {
+        for (let i = 0; i < sumGroupVolumeArr.length - 1; i++) {
           leadershipBonusArr.push((sumGroupVolumeArr[i] - sumGroupVolumeArr[i + 1]) * lpByGen[i] / 100);
         }
       }
     }
 
-    const monthlyBonus: MonthlyBonusModel = {
+    return {
       personalBonus,
       groupBonus,
       leadershipBonusArr,
@@ -196,8 +200,6 @@ export class TeamMemberUtil {
       buildingBonus,
       powerBonus
     };
-
-    return monthlyBonus;
   }
 
   private static getSumGroupVolumeByGeneration(treeNode: TreeNode, targetGeneration: number, currentGeneration: number = 1): number {
@@ -213,53 +215,48 @@ export class TeamMemberUtil {
     return sum;
   }
 
-  private static getLeadershipPercentageByGeneration(title: string) {
-    if (title == TitleEnum.Director) {
-      return [4, 3, 2, 1.5, 0];
-    } else if (title == TitleEnum.BronzeDirector) {
-      return [4.5, 3.25, 2.25, 1.75, 0];
-    } else if (title == TitleEnum.GoldenDirector) {
-      return [5, 3.5, 2.5, 2, 0];
-    } else if (title == TitleEnum.PlatinumDirector) {
-      return [5.5, 4, 2.75, 2.2, 0];
-    } else if (title == TitleEnum.EmeraldDirector) {
-      return [6, 4.5, 3, 2.5, 0];
-    } else if (title == TitleEnum.DiamondDirector) {
-      return [6.5, 5, 3.25, 2.75, 1.5, 0];
-    } else if (title == TitleEnum.VicePresident) {
-      return [7, 5.5, 3.5, 3, 1.75, 0];
-    } else if (title == TitleEnum.President) {
-      return [7.5, 6, 3.75, 3.25, 2, 0.75, 0];
-    } else if (title == TitleEnum.BossDirector) {
-      return [8, 6.5, 4, 3.5, 2.25, 1, 0];
-    } else if (title == TitleEnum.ExecutiveBossDirector) {
-      return [8.5, 7, 4.25, 3.75, 2.5, 1.25, 0.5, 0];
+  private static getLeadershipPercentageByGeneration(title: string): number[] {
+    switch (title) {
+      case TitleEnum.Director:
+        return [4, 3, 2, 1.5, 0];
+      case TitleEnum.BronzeDirector:
+        return [4.5, 3.25, 2.25, 1.75, 0];
+      case TitleEnum.GoldenDirector:
+        return [5, 3.5, 2.5, 2, 0];
+      case TitleEnum.PlatinumDirector:
+        return [5.5, 4, 2.75, 2.2, 0];
+      case TitleEnum.EmeraldDirector:
+        return [6, 4.5, 3, 2.5, 0];
+      case TitleEnum.DiamondDirector:
+        return [6.5, 5, 3.25, 2.75, 1.5, 0];
+      case TitleEnum.VicePresident:
+        return [7, 5.5, 3.5, 3, 1.75, 0];
+      case TitleEnum.President:
+        return [7.5, 6, 3.75, 3.25, 2, 0.75, 0];
+      case TitleEnum.BossDirector:
+        return [8, 6.5, 4, 3.5, 2.25, 1, 0];
+      case TitleEnum.ExecutiveBossDirector:
+        return [8.5, 7, 4.25, 3.75, 2.5, 1.25, 0.5, 0];
+      default:
+        return [];
     }
-
-    return [];
   }
 
   private static getCarBonus(treeNode: TreeNode) {
-    let title = treeNode.data.title;
+    const title: TitleEnum = treeNode.data.title;
+    const carBonusMap: {
+      [key in TitleEnum]?: number
+    } = {
+      [TitleEnum.GoldenDirector]: 350,
+      [TitleEnum.PlatinumDirector]: 400,
+      [TitleEnum.EmeraldDirector]: 450,
+      [TitleEnum.DiamondDirector]: 500,
+      [TitleEnum.VicePresident]: 550,
+      [TitleEnum.President]: 600,
+      [TitleEnum.BossDirector]: 650,
+      [TitleEnum.ExecutiveBossDirector]: 700
+    };
 
-    if (title == TitleEnum.GoldenDirector) {
-      return 350;
-    } else if (title == TitleEnum.PlatinumDirector) {
-      return 400;
-    } else if (title == TitleEnum.EmeraldDirector) {
-      return 450;
-    } else if (title == TitleEnum.DiamondDirector) {
-      return 500;
-    } else if (title == TitleEnum.VicePresident) {
-      return 550;
-    } else if (title == TitleEnum.President) {
-      return 600;
-    } else if (title == TitleEnum.BossDirector) {
-      return 650;
-    } else if (title == TitleEnum.ExecutiveBossDirector) {
-      return 700;
-    }
-
-    return 0;
+    return carBonusMap[title] || 0;
   }
 }
