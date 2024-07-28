@@ -3,6 +3,7 @@ import { MonthlyBonusModel } from 'src/app/models/monthly-bonus.model';
 import { SettingsModel } from 'src/app/models/settings.model';
 import { SettingsService } from 'src/app/services/settings.service';
 import { TeamMemberService } from 'src/app/services/team-member.service';
+import { BonusCalculator } from 'src/app/utils/bonus-calculator.util';
 import { TeamMemberUtil } from 'src/app/utils/team-member.util';
 
 @Component({
@@ -43,7 +44,7 @@ export class HomeComponent implements OnInit {
     this.sidePoints = tree[0].data.sp;
     this.titlePoints = tree[0].data.tp;
 
-    this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
+    this.monthlyBonusModel = BonusCalculator.calculateMonthlyBonus(tree[0]);
   }
 
 }

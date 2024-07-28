@@ -6,6 +6,7 @@ import { Guid } from 'js-guid';
 import { TeamMemberUtil } from 'src/app/utils/team-member.util';
 import { MonthlyBonusModel } from 'src/app/models/monthly-bonus.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BonusCalculator } from 'src/app/utils/bonus-calculator.util';
 
 @Component({
   selector: 'app-organization-chart',
@@ -88,7 +89,7 @@ export class OrganizationChartComponent implements OnInit {
     this.monthlyBonusModel = undefined;
     if (treeNode.data.bonification == 0) return;
 
-    this.monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(treeNode);
+    this.monthlyBonusModel = BonusCalculator.calculateMonthlyBonus(treeNode);
   }
 
   editTeamMember() {

@@ -4,6 +4,7 @@ import { TeamMemberService } from './team-member.service';
 import { TeamMemberUtil } from '../utils/team-member.util';
 import { TeamMemberModel } from '../models/team-member.model';
 import { BonusUtil } from '../utils/bonus.util';
+import { BonusCalculator } from '../utils/bonus-calculator.util';
 
 @Injectable({
   providedIn: 'root'
@@ -70,7 +71,7 @@ export class SimulationsService {
     simulation.titlePoints = tree[0].data.tp;
     if (!isAddAction) simulation.lastUpdateDate = new Date();
 
-    let monthlyBonusModel = TeamMemberUtil.calculateMonthlyBonus(tree[0]);
+    let monthlyBonusModel = BonusCalculator.calculateMonthlyBonus(tree[0]);
 
     simulation.monthlyBonus = monthlyBonusModel;
     simulation.totalBonus = BonusUtil.calculateTotalBonus(monthlyBonusModel);
