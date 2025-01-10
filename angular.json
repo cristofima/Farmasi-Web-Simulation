@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "farmasi-simulation:build:production"
+              "buildTarget": "farmasi-simulation:build:production"
             },
             "development": {
-              "browserTarget": "farmasi-simulation:build:development"
+              "buildTarget": "farmasi-simulation:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "farmasi-simulation:build"
+            "buildTarget": "farmasi-simulation:build"
           }
         },
         "test": {
