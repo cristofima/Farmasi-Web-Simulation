@@ -4,9 +4,7 @@ import { TitleEnum } from "../enums/title.enum";
 import {
   BUILDING_BONUS_AMOUNT_PER_GROUP,
   GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS,
-  MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS,
   MIN_PV_TO_BE_ACTIVE,
-  POWER_BONUS_AMOUNT
 } from "../constants/farmasi.constant";
 
 export class BonusCalculator {
@@ -16,7 +14,6 @@ export class BonusCalculator {
     const groupBonus = this.calculateGroupBonus(treeNode);
     const carBonus = this.calculateCarBonus(treeNode);
     const buildingBonus = this.calculateBuildingBonus(treeNode);
-    const powerBonus = this.calculatePowerBonus(treeNode);
     const leadershipBonusArr = this.calculateLeadershipBonuses(treeNode);
 
     return {
@@ -25,7 +22,6 @@ export class BonusCalculator {
       leadershipBonusArr,
       carBonus,
       buildingBonus,
-      powerBonus
     };
   }
 
@@ -60,10 +56,6 @@ export class BonusCalculator {
     return totalNewActiveBI >= GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS
       ? Math.floor(totalNewActiveBI / GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS) * BUILDING_BONUS_AMOUNT_PER_GROUP
       : 0;
-  }
-
-  private static calculatePowerBonus(treeNode: TreeNode): number {
-    return this.countNewActiveBI(treeNode) >= MIN_NEW_ACTIVE_BI_FOR_POWER_BONUS ? POWER_BONUS_AMOUNT : 0;
   }
 
   private static calculateLeadershipBonuses(treeNode: TreeNode): number[] {

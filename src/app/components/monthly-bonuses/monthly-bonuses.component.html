@@ -1,20 +1,22 @@
-<p-card header="Bonos Mensuales ({{totalBonus | currency}})" *ngIf="monthlyBonusModel">
+<p-card
+  header="Bonos Mensuales ({{ totalBonus | currency }})"
+  *ngIf="monthlyBonusModel"
+>
   <p class="m-0">
-    <b>Bono Personal:</b> {{monthlyBonusModel.personalBonus | currency}}
+    <b>Bono Personal:</b> {{ monthlyBonusModel.personalBonus | currency }}
   </p>
   <p class="m-0">
-    <b>Bono de Grupo:</b> {{monthlyBonusModel.groupBonus | currency}}
+    <b>Bono de Grupo:</b> {{ monthlyBonusModel.groupBonus | currency }}
   </p>
   <p class="m-0" *ngIf="monthlyBonusModel.buildingBonus">
-    <b>Bono de Construcción:</b> {{monthlyBonusModel.buildingBonus | currency}}
-  </p>
-  <p class="m-0" *ngIf="monthlyBonusModel.powerBonus">
-    <b>Power Bonus:</b> {{monthlyBonusModel.powerBonus | currency}}
+    <b>Bono de Construcción:</b>
+    {{ monthlyBonusModel.buildingBonus | currency }}
   </p>
   <p class="m-0" *ngIf="monthlyBonusModel.carBonus">
-    <b>Bono de Auto:</b> {{monthlyBonusModel.carBonus | currency}}
+    <b>Bono de Auto:</b> {{ monthlyBonusModel.carBonus | currency }}
   </p>
   <p class="m-0" *ngIf="monthlyBonusModel.leadershipBonusArr.length > 0">
-    <b>Bono de Liderazgo:</b> {{monthlyBonusModel.leadershipBonusArr | sum | currency}}
+    <b>Bono de Liderazgo:</b>
+    {{ monthlyBonusModel.leadershipBonusArr | sum | currency }}
   </p>
 </p-card>

@@ -4,5 +4,4 @@ export interface MonthlyBonusModel {
   leadershipBonusArr: number[];
   carBonus: number;
   buildingBonus: number;
-  powerBonus: number;
 }
