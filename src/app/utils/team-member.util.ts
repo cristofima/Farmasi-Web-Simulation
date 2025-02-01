@@ -58,13 +58,15 @@ export class TeamMemberUtil {
   private static setSidePoints(node: TreeNode): void {
     if (!node.children) return;
 
-    const sidePoints = node.children
+    let sidePoints: number = node.data.pv;
+
+    sidePoints += node.children
       .filter((child) => child.data.bonification < 18)
       .reduce((acc, child) => acc + child.data.gv, 0);
 
     [18, 22].forEach((bonification) => {
       const maxChildID = this.getChildIDWithMaxGVAtXBonus(node, bonification);
-      node
+      sidePoints += node
         .children!.filter(
           (child) =>
             child.data.bonification === bonification &&
