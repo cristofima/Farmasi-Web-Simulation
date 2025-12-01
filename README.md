@@ -33,6 +33,14 @@ Earned when you reach **Manager/Director** level (GV ≥ 5,000 and SP ≥ 1,500)
 
 The Leadership Bonus is calculated using **Leadership Group Volume (LGV)**, which is the total GV from FIs at **18%, 22%, and 25%** bonus levels combined.
 
+**Generation Counting:**
+- **Gen 1** = Your direct frontline (children of you)
+- **Gen 2** = Children of Gen 1 FIs
+- **Gen 3** = Children of Gen 2 FIs
+- And so on...
+
+Since each FI's GV already includes all their downline volume, the LGV at each generation is naturally cumulative (Gen 1 LGV ≥ Gen 2 LGV ≥ Gen 3 LGV...).
+
 **Formula (Differential):**
 ```
 Generation N Bonus = (LGV_GenN - LGV_GenN+1) × Percentage%
@@ -66,14 +74,6 @@ Monthly allowance for qualifying titles.
 | President | $600 |
 | Boss Director | $650 |
 | Executive Boss | $700 |
-
-### 5. Building Bonus
-Earned for sponsoring new active Beauty Influencers.
-
-```
-Building Bonus = Floor(New Active BIs ÷ 3) × $60
-```
-- New Active BI: Joined within the last month with PV ≥ 75
 
 ---
 
@@ -161,6 +161,9 @@ src/app/
 └── utils/              # Calculation logic
     ├── bonus-calculator.util.ts  # All bonus formulas
     └── team-member.util.ts       # GV, SP, Title calculations
+
+scripts/
+└── xlsx_to_csv.py      # Excel to CSV conversion utility
 ```
 
 ### Tech Stack
@@ -183,6 +186,36 @@ Import your team data from Farmasi exports. Required columns:
 - `Generation` - Hierarchy level (0 = root)
 
 The import automatically detects the root FI (Generation = 0 or missing sponsor).
+
+### Getting the Activity Report
+
+1. Log in to your **Farmasi Back Office** account
+2. Go to the **Activity Report** tab
+3. Select the desired **month** for the report
+4. Click the **Send to Email** button
+5. Download the Excel file from your email
+6. Use the conversion script below to convert it to CSV
+
+### Excel to CSV Conversion Script
+
+A Python utility script is provided in the `scripts/` folder to convert the Excel Activity Report to CSV format.
+
+**Requirements:**
+- Python 3.10+
+- pandas library (`pip install pandas openpyxl`)
+
+**Usage:**
+
+```bash
+# Convert first sheet (default)
+python scripts/xlsx_to_csv.py activity_report.xlsx
+
+# Convert with custom output name
+python scripts/xlsx_to_csv.py activity_report.xlsx output.csv
+
+# Convert all sheets to separate CSV files
+python scripts/xlsx_to_csv.py activity_report.xlsx --all
+```
 
 ---
 
