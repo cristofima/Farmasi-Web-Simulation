@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+input[type="file"] {
+  padding: 0.5rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--border-radius);
+  background-color: var(--surface-ground);
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { TeamMemberModel } from 'src/app/models/team-member.model';
 import { TeamMemberService } from 'src/app/services/team-member.service';
@@ -7,6 +7,7 @@ import { TeamMemberUtil } from 'src/app/utils/team-member.util';
 import { MonthlyBonusModel } from 'src/app/models/monthly-bonus.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BonusCalculator } from 'src/app/utils/bonus-calculator.util';
+import { CsvImportComponent } from '../csv-import/csv-import.component';
 
 @Component({
   selector: 'app-organization-chart',
@@ -19,6 +20,7 @@ export class OrganizationChartComponent implements OnInit {
 
   @Input() storageKey!: string;
   @Output("updateSimulationDetails") updateSimulationDetailsEvent = new EventEmitter<void>();
+  @ViewChild('csvImport') csvImportComponent!: CsvImportComponent;
   private isSimulation = false;
 
   data: TreeNode[] = [];
@@ -118,6 +120,17 @@ export class OrganizationChartComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} eliminado` });
       }
     });
+  }
+
+  showImportDialog() {
+    if (this.csvImportComponent) {
+      this.csvImportComponent.showDialog();
+    }
+  }
+
+  onImportCompleted() {
+    this.resetOrganizationChart();
+    if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
   }
 
   private resetOrganizationChart() {

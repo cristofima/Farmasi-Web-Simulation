@@ -12,6 +12,7 @@ import { SimulationsComponent } from './components/simulations/simulations.compo
 import { SimulationDetailsComponent } from './components/simulation-details/simulation-details.component';
 import { MonthlyBonusesComponent } from './components/monthly-bonuses/monthly-bonuses.component';
 import { TeamPointsComponent } from './components/team-points/team-points.component';
+import { CsvImportComponent } from './components/csv-import/csv-import.component';
 
 import { TabMenuModule } from 'primeng/tabmenu';
 import { OrganizationChartModule } from 'primeng/organizationchart';
@@ -40,6 +41,7 @@ import { SumPipe } from './pipes/sum.pipe';
     SimulationDetailsComponent,
     MonthlyBonusesComponent,
     TeamPointsComponent,
+    CsvImportComponent,
     SumPipe
   ],
   imports: [

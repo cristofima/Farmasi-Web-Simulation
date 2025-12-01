@@ -58,15 +58,29 @@ export class BonusCalculator {
       : 0;
   }
 
+  /**
+   * Calculate Leadership Bonuses using differential LGV (Leadership Group Volume) formula.
+   * LGV = Total GV from FIs at 25%, 22%, and 18% bonus levels combined.
+   * Bonus per generation = (LGV_GenN - LGV_GenN+1) × Percentage%
+   * 
+   * Requirements: GV >= 5000 and SP >= 1500
+   */
   private static calculateLeadershipBonuses(treeNode: TreeNode): number[] {
     if (!treeNode.children || treeNode.data.gv < 5000 || treeNode.data.sp < 1500) return [];
 
     const lpByGen = this.getLeadershipPercentageByGeneration(treeNode.data.title);
-    const sumGroupVolumeArr = this.getSumGroupVolumeByGeneration(treeNode, lpByGen.length);
+    if (lpByGen.length === 0) return [];
 
+    const generations = lpByGen.length;
+    // Get cumulative LGV (Leadership Group Volume) for each generation
+    // LGV includes GV from FIs at 18%, 22%, and 25% bonus levels
+    const lgvByGeneration = this.getLGVByGeneration(treeNode, generations);
+
+    // Leadership bonus uses differential formula: (LGV_GenN - LGV_GenN+1) × %
     return lpByGen.map((percentage, index) => {
-      if (index === sumGroupVolumeArr.length - 1) return 0;
-      return (sumGroupVolumeArr[index] - sumGroupVolumeArr[index + 1]) * percentage / 100;
+      const currentLGV = lgvByGeneration[index] || 0;
+      const nextLGV = lgvByGeneration[index + 1] || 0;
+      return (currentLGV - nextLGV) * percentage / 100;
     });
   }
 
@@ -76,20 +90,41 @@ export class BonusCalculator {
       : 0;
   }
 
-  private static getSumGroupVolumeByGeneration(treeNode: TreeNode, generations: number, currentGeneration: number = 1): number[] {
-    if (!treeNode.children) return Array(generations).fill(0);
+  /**
+   * Get cumulative Leadership Group Volume (LGV) for each generation.
+   * LGV = Total GV from FIs at 18%, 22%, and 25% bonus levels.
+   * Each generation's LGV includes all qualifying FIs from that generation onwards (cumulative downward).
+   */
+  private static getLGVByGeneration(treeNode: TreeNode, generations: number): number[] {
+    // First, get raw LGV for each generation level
+    const rawLGVByGen = Array(generations + 1).fill(0);
+    this.accumulateLGV(treeNode, rawLGVByGen, 0);
 
-    const sumGroupVolumes = Array(generations).fill(0);
-    sumGroupVolumes[currentGeneration - 1] = treeNode.children.reduce((acc, child) => acc + child.data.gv, 0);
+    // Convert to cumulative LGV (each generation includes all below)
+    // This is needed for the differential calculation
+    const cumulativeLGV = Array(generations + 1).fill(0);
+    for (let i = generations; i >= 0; i--) {
+      cumulativeLGV[i] = rawLGVByGen[i] + (cumulativeLGV[i + 1] || 0);
+    }
 
+    return cumulativeLGV;
+  }
+
+  private static accumulateLGV(treeNode: TreeNode, volumes: number[], currentGen: number): void {
+    if (!treeNode.children || currentGen >= volumes.length) return;
+
+    // LGV includes GV from FIs at 18%, 22%, and 25% bonus levels
+    const qualifyingBonusLevels = [18, 22, 25];
+    const lgv = treeNode.children
+      .filter(child => qualifyingBonusLevels.includes(child.data.bonification))
+      .reduce((acc, child) => acc + child.data.gv, 0);
+    
+    volumes[currentGen] += lgv;
+
+    // Recurse into ALL children to find qualifying FIs in deeper generations
     treeNode.children.forEach(child => {
-      const childVolumes = this.getSumGroupVolumeByGeneration(child, generations, currentGeneration + 1);
-      childVolumes.forEach((volume, index) => {
-        sumGroupVolumes[index] += volume;
-      });
+      this.accumulateLGV(child, volumes, currentGen + 1);
     });
-
-    return sumGroupVolumes;
   }
 
   private static getLeadershipPercentageByGeneration(title: string): number[] {
