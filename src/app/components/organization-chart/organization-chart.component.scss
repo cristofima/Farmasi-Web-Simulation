@@ -1,4 +1,22 @@
-.p-button-small {
-  width: calc(0.875 * 2.357rem) !important;
-  height: calc(0.875 * 2.357rem) !important;
+// Contenedor de botones de acción en cada nodo
+.node-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+// Asegurar que los botones pequeños tengan tamaño consistente
+:host ::ng-deep {
+  .p-button.p-button-sm {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+  }
+  
+  .p-organizationchart-node-content {
+    padding: 0.75rem;
+    min-width: 150px;
+  }
 }

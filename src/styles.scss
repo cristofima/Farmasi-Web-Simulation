@@ -2,3 +2,53 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.css";
+
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--surface-ground);
+}
+
+/* Card container styles */
+.card {
+  background-color: var(--surface-card);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+/* Form field improvements */
+.field {
+  margin-bottom: 1rem;
+
+  > label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+}
+
+.field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Make InputNumber and Dropdown take full width */
+.p-inputnumber,
+.p-dropdown {
+  width: 100%;
+}
+
+/* Responsive dialog adjustments */
+@media screen and (max-width: 768px) {
+  .p-dialog {
+    width: 90vw !important;
+  }
+}
+
+/* Table responsive improvements */
+.p-datatable-wrapper {
+  overflow-x: auto;
+}

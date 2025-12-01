@@ -1,10 +1,10 @@
 <p-confirmDialog [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
-<br />
-<div class="flex justify-content-center gap-2">
-  <p-button (click)="showDialog()" label="Añadir miembro" icon="pi pi-plus"></p-button>
-  <p-button (click)="showImportDialog()" label="Importar CSV" icon="pi pi-upload" styleClass="p-button-secondary"></p-button>
-</div>
-<br />
+
+<div class="p-4">
+  <div class="flex justify-content-center gap-2 mb-4">
+    <p-button (click)="showDialog()" label="Añadir miembro" icon="pi pi-plus"></p-button>
+    <p-button (click)="showImportDialog()" label="Importar CSV" icon="pi pi-upload" styleClass="p-button-secondary"></p-button>
+  </div>
 
 <!-- CSV Import Component -->
 <app-csv-import #csvImport (importCompleted)="onImportCompleted()"></app-csv-import>
@@ -14,13 +14,13 @@
     <div class="flex-auto overflow-x-auto">
       <p-organizationChart [value]="data">
         <ng-template let-node pTemplate="person">
-          <div class="flex  flex-wrap gap-3 justify-content-center">
+          <div class="node-actions">
             <button pButton icon="pi pi-folder" (click)="loadDetailsDialog(node)" title="Ver más detalles"
-              class="p-button-rounded p-button-secondary p-button-small"></button>
+              class="p-button-rounded p-button-secondary p-button-sm"></button>
             <button *ngIf="node.data.parentId" pButton icon="pi pi-pencil" (click)="loadEditDialog(node)" title="Editar"
-              class="p-button-rounded p-button-small"></button>
+              class="p-button-rounded p-button-sm"></button>
             <button *ngIf="node.data.parentId" pButton icon="pi pi-trash" (click)="deleteTeamMember(node)"
-              title="Eliminar" class="p-button-rounded p-button-danger p-button-small"></button>
+              title="Eliminar" class="p-button-rounded p-button-danger p-button-sm"></button>
           </div>
           <div class="text-center">
             <div class="font-bold">{{ node.data.name }}</div>
@@ -34,26 +34,33 @@
     </div>
   </div>
 </div>
+</div>
 
 <p-scrollTop></p-scrollTop>
 
 <p-dialog header="{{isEdit ? 'Editar' : 'Nuevo'}} miembro" [(visible)]="visible" [style]="{width: '30vw'}"
   [modal]="true" [draggable]="false">
   <form [formGroup]="formGroup">
-    <div class="card flex flex-wrap gap-3 p-fluid">
-      <div class="flex flex-column gap-2">
-        <label for="name">Nombre</label>
+    <div class="p-fluid">
+      <div class="field">
+        <label for="name" class="font-medium">Nombre</label>
         <input pInputText id="name" formControlName="name" />
+      </div>
+      <div class="field-checkbox mt-3 mb-3">
         <p-checkbox
             [binary]="true"
             label="¿Es nuevo?"
             formControlName="isNew" />
-        <label for="personalVolume">VP</label>
+      </div>
+      <div class="field">
+        <label for="personalVolume" class="font-medium">VP</label>
         <p-inputNumber inputId="personalVolume" formControlName="personalVolume" [min]="0.00"
-          mode="decimal" [maxFractionDigits]="2" [showButtons]="true" > </p-inputNumber>
-        <label for="parentId">Miembro padre</label>
+          mode="decimal" [maxFractionDigits]="2" [showButtons]="true" styleClass="w-full"></p-inputNumber>
+      </div>
+      <div class="field">
+        <label for="parentId" class="font-medium">Miembro padre</label>
         <p-dropdown [options]="members" formControlName="parentId" placeholder="Seleccionar" id="parentId"
-          [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body"></p-dropdown>
+          [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body" styleClass="w-full"></p-dropdown>
       </div>
     </div>
   </form>

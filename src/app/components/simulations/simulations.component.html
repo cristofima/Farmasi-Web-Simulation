@@ -1,9 +1,11 @@
-<br />
 <p-confirmDialog [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
-<p-button (click)="showDialog()" label="Nueva simulación" [disabled]="!enableAddButton"></p-button>
-<br />
 
-<div class="card">
+<div class="p-4">
+  <div class="mb-3">
+    <p-button (click)="showDialog()" label="Nueva simulación" icon="pi pi-plus" [disabled]="!enableAddButton"></p-button>
+  </div>
+
+  <div class="card">
   <p-table [value]="simulations" dataKey="id" [tableStyle]="{'min-width': '60rem'}">
     <ng-template pTemplate="caption">Simulaciones</ng-template>
     <ng-template pTemplate="header">
@@ -67,9 +69,8 @@
       </tr>
     </ng-template>
   </p-table>
+  </div>
 </div>
-
-<br />
 
 <p-dialog header="Nueva simulación" [(visible)]="visible" [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
   <form [formGroup]="formGroup">

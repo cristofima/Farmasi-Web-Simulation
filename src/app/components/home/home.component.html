@@ -1,16 +1,20 @@
-<br />
+<div class="p-4">
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-4">
+      <p-card header="Compras">
+        <p class="m-0">
+          <b>Volumen Personal (VP):</b> {{personalVolume}}
+        </p>
+      </p-card>
+    </div>
+  </div>
 
-<p-card header="Compras">
-  <p class="m-0">
-    <b>Volumen Personal (VP):</b> {{personalVolume}}
-  </p>
-</p-card>
+  <div class="mt-4">
+    <app-team-points [groupVolume]="groupVolume" [bonusPercentage]="bonusPercentage" [title]="title"
+      [sidePoints]="sidePoints" [titlePoints]="titlePoints"></app-team-points>
+  </div>
 
-<br />
-
-<app-team-points [groupVolume]="groupVolume" [bonusPercentage]="bonusPercentage" [title]="title"
-  [sidePoints]="sidePoints" [titlePoints]="titlePoints"></app-team-points>
-
-<br />
-
-<app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" *ngIf="monthlyBonusModel"></app-monthly-bonuses>
+  <div class="mt-4" *ngIf="monthlyBonusModel">
+    <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel"></app-monthly-bonuses>
+  </div>
+</div>
