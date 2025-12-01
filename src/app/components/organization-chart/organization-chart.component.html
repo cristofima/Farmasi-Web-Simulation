@@ -78,6 +78,6 @@
       [groupVolume]="selectedTreeNode.data.gv" [bonusPercentage]="selectedTreeNode.data.bonification"
       [title]="selectedTreeNode.data.title" [sidePoints]="selectedTreeNode.data.sp"
       [titlePoints]="selectedTreeNode.data.tp"></app-team-points>
-    <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" *ngIf="monthlyBonusModel"></app-monthly-bonuses>
+    <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" [title]="selectedTreeNode?.data?.title" *ngIf="monthlyBonusModel"></app-monthly-bonuses>
   </div>
 </p-dialog>

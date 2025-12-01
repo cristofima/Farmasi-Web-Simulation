@@ -29,6 +29,7 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 import { SumPipe } from './pipes/sum.pipe';
 
 @NgModule({
@@ -63,7 +64,8 @@ import { SumPipe } from './pipes/sum.pipe';
     TableModule,
     ScrollTopModule,
     CheckboxModule,
-    TagModule
+    TagModule,
+    TooltipModule
   ],
   providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]

@@ -1,3 +1,1 @@
-export const GROUP_NEW_ACTIVE_BI_FOR_BUILDING_BONUS = 3;
-export const BUILDING_BONUS_AMOUNT_PER_GROUP = 60;
 export const MIN_PV_TO_BE_ACTIVE = 75;
