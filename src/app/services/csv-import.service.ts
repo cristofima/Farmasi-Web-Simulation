@@ -44,7 +44,7 @@ export class CsvImportService {
       result.totalRows = rows.length;
 
       if (rows.length === 0) {
-        result.errors.push('El archivo CSV está vacío o no tiene formato válido');
+        result.errors.push('The CSV file is empty or has an invalid format');
         return { result, teamMembers };
       }
 
@@ -54,7 +54,7 @@ export class CsvImportService {
       const missingColumns = requiredColumns.filter(col => !headers.some(h => h.toLowerCase().trim() === col.toLowerCase()));
 
       if (missingColumns.length > 0) {
-        result.errors.push(`Columnas faltantes: ${missingColumns.join(', ')}`);
+        result.errors.push(`Missing columns: ${missingColumns.join(', ')}`);
         return { result, teamMembers };
       }
 
@@ -71,7 +71,7 @@ export class CsvImportService {
       );
 
       if (!rootMember) {
-        result.errors.push('No se pudo determinar el miembro raíz (FI principal)');
+        result.errors.push('Could not determine the root member (main FI)');
         return { result, teamMembers };
       }
 
@@ -108,7 +108,7 @@ export class CsvImportService {
       result.success = true;
 
     } catch (error) {
-      result.errors.push(`Error al procesar el archivo: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      result.errors.push(`Error processing the file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 
     return { result, teamMembers };
@@ -237,19 +237,19 @@ export class CsvImportService {
    */
   validateFile(file: File): string | null {
     if (!file) {
-      return 'No se seleccionó ningún archivo';
+      return 'No file selected';
     }
 
     const validExtensions = ['.csv'];
     const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
 
     if (!validExtensions.includes(fileExtension)) {
-      return 'El archivo debe ser un CSV (.csv)';
+      return 'The file must be a CSV (.csv)';
     }
 
     // Max 5MB
     if (file.size > 5 * 1024 * 1024) {
-      return 'El archivo no debe superar los 5MB';
+      return 'The file must not exceed 5MB';
     }
 
     return null;

@@ -38,6 +38,6 @@ export class SettingsComponent implements OnInit {
     };
 
     this.teamMemberService.getTeamMember(teamMember.id) ? this.teamMemberService.editTeamMember(teamMember.id, teamMember.name, teamMember.personalVolume) : this.teamMemberService.addTeamMember(teamMember);
-    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: 'Configuración actualizada' });
+    this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: 'Settings updated' });
   }
 }

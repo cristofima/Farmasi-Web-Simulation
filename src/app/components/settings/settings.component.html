@@ -1,19 +1,19 @@
 <div class="p-4">
-  <p-card header="Configuración Personal">
+  <p-card header="Personal Settings">
     <form [formGroup]="formGroup" (ngSubmit)="saveSettings()">
       <div class="formgrid grid">
         <div class="field col-12 md:col-6">
-          <label for="name" class="font-medium">Nombre</label>
+          <label for="name" class="font-medium">Name</label>
           <input pInputText id="name" formControlName="name" class="w-full" />
         </div>
         <div class="field col-12 md:col-6">
-          <label for="personalVolume" class="font-medium">Volumen Personal</label>
+          <label for="personalVolume" class="font-medium">Personal Volume</label>
           <p-inputNumber inputId="personalVolume" formControlName="personalVolume" mode="decimal" [min]="0"
             [maxFractionDigits]="2" [showButtons]="true" styleClass="w-full"></p-inputNumber>
         </div>
       </div>
       <div class="flex justify-content-end mt-3">
-        <p-button label="Guardar" type="submit" icon="pi pi-save" [disabled]="!formGroup.valid"></p-button>
+        <p-button label="Save" type="submit" icon="pi pi-save" [disabled]="!formGroup.valid"></p-button>
       </div>
     </form>
   </p-card>

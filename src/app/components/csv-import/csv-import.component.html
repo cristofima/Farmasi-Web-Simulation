@@ -1,18 +1,18 @@
-<p-dialog header="Importar Equipo desde CSV" [(visible)]="visible" [style]="{width: '40vw'}"
+<p-dialog header="Import Team from CSV" [(visible)]="visible" [style]="{width: '40vw'}"
   [modal]="true" [draggable]="false" [closable]="!loading">
 
   <div class="p-fluid">
     <!-- Instructions -->
     <div class="mb-4">
       <p class="text-600">
-        Seleccione un archivo CSV exportado de Farmasi para importar su equipo.
-        <b>Esta acción reemplazará todos los datos actuales.</b>
+        Select a CSV file exported from Farmasi to import your team.
+        <b>This action will replace all current data.</b>
       </p>
     </div>
 
     <!-- Expected columns info -->
     <div class="mb-4 p-3 surface-100 border-round">
-      <p class="font-bold mb-2">Columnas requeridas en el CSV:</p>
+      <p class="font-bold mb-2">Required columns in CSV:</p>
       <ul class="m-0 pl-4">
         <li *ngFor="let col of getExpectedColumns()" class="text-sm">{{ col }}</li>
       </ul>
@@ -20,18 +20,18 @@
 
     <!-- File input -->
     <div class="mb-4">
-      <label for="csvFile" class="font-bold block mb-2">Archivo CSV:</label>
+      <label for="csvFile" class="font-bold block mb-2">CSV File:</label>
       <input type="file" id="csvFile" accept=".csv" (change)="onFileSelect($event)"
         class="p-inputtext w-full" [disabled]="loading" />
       <small *ngIf="selectedFile" class="text-green-600 block mt-2">
         <i class="pi pi-check-circle mr-1"></i>
-        Archivo seleccionado: {{ selectedFile.name }}
+        Selected file: {{ selectedFile.name }}
       </small>
     </div>
 
     <!-- Import result preview -->
     <div *ngIf="importResult && !importResult.success" class="p-3 surface-danger border-round mb-4">
-      <p class="font-bold text-red-600 mb-2">Errores encontrados:</p>
+      <p class="font-bold text-red-600 mb-2">Errors found:</p>
       <ul class="m-0 pl-4">
         <li *ngFor="let error of importResult.errors" class="text-red-600">{{ error }}</li>
       </ul>
@@ -41,16 +41,16 @@
     <div class="p-3 bg-yellow-100 border-round border-1 border-yellow-500 mb-4">
       <p class="m-0 text-yellow-800">
         <i class="pi pi-exclamation-triangle mr-2"></i>
-        <b>Advertencia:</b> La importación reemplazará completamente el equipo actual guardado en el navegador.
+        <b>Warning:</b> The import will completely replace the current team saved in the browser.
       </p>
     </div>
   </div>
 
   <ng-template pTemplate="footer">
     <div class="flex justify-content-between">
-      <p-button label="Cancelar" icon="pi pi-times" (onClick)="hideDialog()"
+      <p-button label="Cancel" icon="pi pi-times" (onClick)="hideDialog()"
         [disabled]="loading" styleClass="p-button-text"></p-button>
-      <p-button label="Importar" icon="pi pi-upload" (onClick)="importCsv()"
+      <p-button label="Import" icon="pi pi-upload" (onClick)="importCsv()"
         [disabled]="!selectedFile || loading" [loading]="loading"></p-button>
     </div>
   </ng-template>

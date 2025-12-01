@@ -38,14 +38,14 @@ export class SimulationsComponent implements OnInit {
     this.groupedSimulations = [];
     let items: SelectItemGroup[] = [
       {
-        label: 'Equipo',
+        label: 'Team',
         value: 'team',
         items: [
-          { label: 'Equipo Actual', value: 'current-team' }
+          { label: 'Current Team', value: 'current-team' }
         ]
       },
       {
-        label: 'Simulaciones',
+        label: 'Simulations',
         value: 'simulations',
         items: []
       }
@@ -86,19 +86,19 @@ export class SimulationsComponent implements OnInit {
 
     this.simulationsService.addSimulation(simulation, team);
     this.router.navigate(['/simulations', simulation.id]);
-    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Simulación ${simulation.name} creada` });
+    this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: `Simulation ${simulation.name} created` });
   }
 
   deleteSimulation(simulation: SimulationModel) {
     this.confirmationService.confirm({
-      message: `¿Está seguro de eliminar la simulación <b>${simulation.name}</b>?`,
-      header: 'Confirmación',
+      message: `Are you sure you want to delete the simulation <b>${simulation.name}</b>?`,
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.simulationsService.deleteSimulation(simulation.id);
         this.simulations = this.simulations.filter(s => s.id != simulation.id);
         this.groupedSimulations[1].items = this.groupedSimulations[1].items.filter(s => s.value != simulation.id);
-        this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Simulación ${simulation.name} eliminada` });
+        this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: `Simulation ${simulation.name} deleted` });
       }
     });
   }

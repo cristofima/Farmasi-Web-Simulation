@@ -2,8 +2,8 @@
 
 <div class="p-4">
   <div class="flex justify-content-center gap-2 mb-4">
-    <p-button (click)="showDialog()" label="Añadir miembro" icon="pi pi-plus"></p-button>
-    <p-button (click)="showImportDialog()" label="Importar CSV" icon="pi pi-upload" styleClass="p-button-secondary"></p-button>
+    <p-button (click)="showDialog()" label="Add member" icon="pi pi-plus"></p-button>
+    <p-button (click)="showImportDialog()" label="Import CSV" icon="pi pi-upload" styleClass="p-button-secondary"></p-button>
   </div>
 
 <!-- CSV Import Component -->
@@ -15,17 +15,17 @@
       <p-organizationChart [value]="data">
         <ng-template let-node pTemplate="person">
           <div class="node-actions">
-            <button pButton icon="pi pi-folder" (click)="loadDetailsDialog(node)" title="Ver más detalles"
+            <button pButton icon="pi pi-folder" (click)="loadDetailsDialog(node)" title="View details"
               class="p-button-rounded p-button-secondary p-button-sm"></button>
-            <button *ngIf="node.data.parentId" pButton icon="pi pi-pencil" (click)="loadEditDialog(node)" title="Editar"
+            <button *ngIf="node.data.parentId" pButton icon="pi pi-pencil" (click)="loadEditDialog(node)" title="Edit"
               class="p-button-rounded p-button-sm"></button>
             <button *ngIf="node.data.parentId" pButton icon="pi pi-trash" (click)="deleteTeamMember(node)"
-              title="Eliminar" class="p-button-rounded p-button-danger p-button-sm"></button>
+              title="Delete" class="p-button-rounded p-button-danger p-button-sm"></button>
           </div>
           <div class="text-center">
             <div class="font-bold">{{ node.data.name }}</div>
             <div>{{ node.data.title }} {{ node.data.bonification }}%</div>
-            <p-tag *ngIf="node.data.isNew" value="Nuevo" [rounded]="true" severity="success"></p-tag>
+            <p-tag *ngIf="node.data.isNew" value="New" [rounded]="true" severity="success"></p-tag>
             <p><b>VP:</b> {{ node.data.pv | number:'1.0-2' }}</p>
             <p><b>VG:</b> {{ node.data.gv | number:'1.0-2' }}</p>
           </div>
@@ -38,40 +38,40 @@
 
 <p-scrollTop></p-scrollTop>
 
-<p-dialog header="{{isEdit ? 'Editar' : 'Nuevo'}} miembro" [(visible)]="visible" [style]="{width: '30vw'}"
+<p-dialog header="{{isEdit ? 'Edit' : 'New'}} member" [(visible)]="visible" [style]="{width: '30vw'}"
   [modal]="true" [draggable]="false">
   <form [formGroup]="formGroup">
     <div class="p-fluid">
       <div class="field">
-        <label for="name" class="font-medium">Nombre</label>
+        <label for="name" class="font-medium">Name</label>
         <input pInputText id="name" formControlName="name" />
       </div>
       <div class="field-checkbox mt-3 mb-3">
         <p-checkbox
             [binary]="true"
-            label="¿Es nuevo?"
+            label="Is new?"
             formControlName="isNew" />
       </div>
       <div class="field">
-        <label for="personalVolume" class="font-medium">VP</label>
+        <label for="personalVolume" class="font-medium">PV</label>
         <p-inputNumber inputId="personalVolume" formControlName="personalVolume" [min]="0.00"
           mode="decimal" [maxFractionDigits]="2" [showButtons]="true" styleClass="w-full"></p-inputNumber>
       </div>
       <div class="field">
-        <label for="parentId" class="font-medium">Miembro padre</label>
-        <p-dropdown [options]="members" formControlName="parentId" placeholder="Seleccionar" id="parentId"
+        <label for="parentId" class="font-medium">Parent member</label>
+        <p-dropdown [options]="members" formControlName="parentId" placeholder="Select" id="parentId"
           [filter]="true" optionValue="id" optionLabel="name" filterBy="name" appendTo="body" styleClass="w-full"></p-dropdown>
       </div>
     </div>
   </form>
 
   <ng-template pTemplate="footer">
-    <p-button (onClick)="isEdit ? editTeamMember() : addTeamMember()" label="Guardar"
+    <p-button (onClick)="isEdit ? editTeamMember() : addTeamMember()" label="Save"
       [disabled]="!formGroup.valid"></p-button>
   </ng-template>
 </p-dialog>
 
-<p-dialog header="Detalles de {{selectedTreeNode?.data?.name}}" [(visible)]="showDetailsDialog"
+<p-dialog header="Details of {{selectedTreeNode?.data?.name}}" [(visible)]="showDetailsDialog"
   [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
   <div class="card flex flex-wrap gap-3 p-fluid">
     <app-team-points *ngIf="selectedTreeNode" [personalVolume]="selectedTreeNode.data.pv"

@@ -47,7 +47,7 @@ export class CsvImportComponent {
       if (validationError) {
         this.messageService.add({
           severity: 'error',
-          summary: 'Error de validación',
+          summary: 'Validation Error',
           detail: validationError
         });
         this.selectedFile = null;
@@ -63,8 +63,8 @@ export class CsvImportComponent {
     if (!this.selectedFile) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Por favor seleccione un archivo CSV'
+        summary: 'Warning',
+        detail: 'Please select a CSV file'
       });
       return;
     }
@@ -93,8 +93,8 @@ export class CsvImportComponent {
 
         this.messageService.add({
           severity: 'success',
-          summary: 'Importación exitosa',
-          detail: `Se importaron ${result.importedCount} miembros. FI Principal: ${result.rootMember}`
+          summary: 'Import successful',
+          detail: `${result.importedCount} members imported. Main FI: ${result.rootMember}`
         });
 
         this.importCompleted.emit();
@@ -102,7 +102,7 @@ export class CsvImportComponent {
       } else {
         this.messageService.add({
           severity: 'error',
-          summary: 'Error en la importación',
+          summary: 'Import error',
           detail: result.errors.join('. ')
         });
       }
@@ -110,7 +110,7 @@ export class CsvImportComponent {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'No se pudo leer el archivo'
+        detail: 'Could not read the file'
       });
     } finally {
       this.loading = false;
@@ -121,7 +121,7 @@ export class CsvImportComponent {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target?.result as string);
-      reader.onerror = () => reject(new Error('Error al leer el archivo'));
+      reader.onerror = () => reject(new Error('Error reading the file'));
       reader.readAsText(file, 'UTF-8');
     });
   }

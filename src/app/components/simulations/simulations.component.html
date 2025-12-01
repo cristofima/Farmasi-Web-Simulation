@@ -2,24 +2,24 @@
 
 <div class="p-4">
   <div class="mb-3">
-    <p-button (click)="showDialog()" label="Nueva simulación" icon="pi pi-plus" [disabled]="!enableAddButton"></p-button>
+    <p-button (click)="showDialog()" label="New simulation" icon="pi pi-plus" [disabled]="!enableAddButton"></p-button>
   </div>
 
   <div class="card">
   <p-table [value]="simulations" dataKey="id" [tableStyle]="{'min-width': '60rem'}">
-    <ng-template pTemplate="caption">Simulaciones</ng-template>
+    <ng-template pTemplate="caption">Simulations</ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 5rem"></th>
-        <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
-        <th pSortableColumn="title">Título <p-sortIcon field="title"></p-sortIcon></th>
-        <th pSortableColumn="groupVolume">Volumen Grupal <p-sortIcon field="groupVolume"></p-sortIcon></th>
-        <th pSortableColumn="sidePoints">Puntos Laterales <p-sortIcon field="sidePoints"></p-sortIcon>
+        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+        <th pSortableColumn="groupVolume">Group Volume <p-sortIcon field="groupVolume"></p-sortIcon></th>
+        <th pSortableColumn="sidePoints">Side Points <p-sortIcon field="sidePoints"></p-sortIcon>
         </th>
-        <th pSortableColumn="totalBonus">Bono Mensual <p-sortIcon field="totalBonus"></p-sortIcon></th>
-        <th pSortableColumn="creationDate">Fecha Creación <p-sortIcon field="creationDate"></p-sortIcon>
+        <th pSortableColumn="totalBonus">Monthly Bonus <p-sortIcon field="totalBonus"></p-sortIcon></th>
+        <th pSortableColumn="creationDate">Creation Date <p-sortIcon field="creationDate"></p-sortIcon>
         </th>
-        <th pSortableColumn="lastUpdateDate">Última Modificación <p-sortIcon field="lastUpdateDate"></p-sortIcon></th>
+        <th pSortableColumn="lastUpdateDate">Last Modified <p-sortIcon field="lastUpdateDate"></p-sortIcon></th>
         <th></th>
       </tr>
     </ng-template>
@@ -40,8 +40,8 @@
         <td>
           <div class="flex flex-wrap gap-3 justify-content-center">
             <p-button (onClick)="goToDetails(simulation.id)" icon="pi pi-folder" styleClass="p-button-secondary"
-              title="Ver miembros"></p-button>
-            <p-button (onClick)="deleteSimulation(simulation)" icon="pi pi-trash" title="Eliminar"
+              title="View members"></p-button>
+            <p-button (onClick)="deleteSimulation(simulation)" icon="pi pi-trash" title="Delete"
               styleClass="p-button-danger"></p-button>
           </div>
         </td>
@@ -64,7 +64,7 @@
     <ng-template pTemplate="emptymessage" let-details>
       <tr>
         <td colspan="9" style="text-align: center;">
-          No hay registros
+          No records
         </td>
       </tr>
     </ng-template>
@@ -72,21 +72,21 @@
   </div>
 </div>
 
-<p-dialog header="Nueva simulación" [(visible)]="visible" [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
+<p-dialog header="New simulation" [(visible)]="visible" [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
   <form [formGroup]="formGroup">
     <div class="card flex flex-wrap gap-3 p-fluid">
       <div class="flex flex-column gap-2">
-        <label for="name">Nombre</label>
+        <label for="name">Name</label>
         <input pInputText id="name" formControlName="name" />
-        <label for="team">Copiar de</label>
-        <p-dropdown [options]="groupedSimulations" formControlName="team" placeholder="Seleccionar" [group]="true"
+        <label for="team">Copy from</label>
+        <p-dropdown [options]="groupedSimulations" formControlName="team" placeholder="Select" [group]="true"
           id="team" [filter]="true" appendTo="body"></p-dropdown>
       </div>
     </div>
   </form>
 
   <ng-template pTemplate="footer">
-    <p-button (click)="addSimulation()" label="Guardar" [disabled]="!formGroup.valid"></p-button>
+    <p-button (click)="addSimulation()" label="Save" [disabled]="!formGroup.valid"></p-button>
   </ng-template>
 
 </p-dialog>

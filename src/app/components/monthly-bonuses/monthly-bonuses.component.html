@@ -1,18 +1,18 @@
 <p-card
-  header="Bonos Mensuales ({{ totalBonus | currency }})"
+  header="Monthly Bonuses ({{ totalBonus | currency }})"
   *ngIf="monthlyBonusModel"
 >
   <p class="m-0">
-    <b>Bono Personal:</b> {{ monthlyBonusModel.personalBonus | currency }}
+    <b>Personal Bonus:</b> {{ monthlyBonusModel.personalBonus | currency }}
   </p>
   <p class="m-0">
-    <b>Bono de Grupo:</b> {{ monthlyBonusModel.groupBonus | currency }}
+    <b>Group Bonus:</b> {{ monthlyBonusModel.groupBonus | currency }}
   </p>
   <p class="m-0" *ngIf="monthlyBonusModel.carBonus">
-    <b>Bono de Auto:</b> {{ monthlyBonusModel.carBonus | currency }}
+    <b>Car Bonus:</b> {{ monthlyBonusModel.carBonus | currency }}
   </p>
   <p class="m-0" *ngIf="monthlyBonusModel.leadershipBonusArr.length > 0">
-    <b>Bono de Liderazgo:</b>
+    <b>Leadership Bonus:</b>
     {{ monthlyBonusModel.leadershipBonusArr | sum | currency }}
     <button
       pButton
@@ -20,21 +20,21 @@
       icon="pi pi-info-circle"
       class="p-button-text p-button-sm p-button-rounded"
       (click)="openLeadershipDialog()"
-      pTooltip="Ver detalle por generación"
+      pTooltip="View generation details"
     ></button>
   </p>
 </p-card>
 
 <p-dialog
-  header="Detalle de Bono de Liderazgo"
+  header="Leadership Bonus Details"
   [(visible)]="showLeadershipDialog"
   [modal]="true"
   [style]="{ width: '600px' }"
   [dismissableMask]="true"
 >
   <p class="text-sm text-color-secondary mb-3">
-    LGV = Volumen de Grupo de Liderazgo (FIs al 18%, 22%, 25%) acumulativo.<br>
-    Bono = (LGV Gen N - LGV Gen N+1) × Porcentaje
+    LGV = Leadership Group Volume (FIs at 18%, 22%, 25%) cumulative.<br>
+    Bonus = (LGV Gen N - LGV Gen N+1) × Percentage
   </p>
   
   <p-table 
@@ -48,8 +48,8 @@
         <th>Gen</th>
         <th>%</th>
         <th class="text-right">LGV</th>
-        <th class="text-right">Diferencial</th>
-        <th class="text-right">Monto</th>
+        <th class="text-right">Differential</th>
+        <th class="text-right">Amount</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-detail let-expanded="expanded">
@@ -74,13 +74,13 @@
       <tr *ngIf="selectedGeneration === detail && detail.fis.length > 0">
         <td colspan="6" class="p-0">
           <div class="p-3 surface-100">
-            <p class="mt-0 mb-2 font-semibold text-sm">FIs que califican en Generación {{ detail.generation }}:</p>
+            <p class="mt-0 mb-2 font-semibold text-sm">Qualifying FIs in Generation {{ detail.generation }}:</p>
             <p-table [value]="detail.fis" styleClass="p-datatable-sm">
               <ng-template pTemplate="header">
                 <tr>
-                  <th>Nombre</th>
-                  <th>Bonificación</th>
-                  <th class="text-right">VG</th>
+                  <th>Name</th>
+                  <th>Bonus</th>
+                  <th class="text-right">GV</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-fi>
@@ -92,7 +92,7 @@
               </ng-template>
               <ng-template pTemplate="footer">
                 <tr>
-                  <td colspan="2"><b>Total VG Gen {{ detail.generation }}</b></td>
+                  <td colspan="2"><b>Total GV Gen {{ detail.generation }}</b></td>
                   <td class="text-right"><b>{{ detail.differentialLgv | number:'1.0-2' }}</b></td>
                 </tr>
               </ng-template>
@@ -103,7 +103,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <tr>
-        <td colspan="5"><b>Total Bono de Liderazgo</b></td>
+        <td colspan="5"><b>Total Leadership Bonus</b></td>
         <td class="text-right"><b>{{ getTotalLeadershipBonus() | currency }}</b></td>
       </tr>
     </ng-template>

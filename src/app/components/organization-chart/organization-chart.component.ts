@@ -66,7 +66,7 @@ export class OrganizationChartComponent implements OnInit {
     };
 
     this.teamMemberService.addTeamMember(newTeamMember);
-    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${newTeamMember.name} añadido` });
+    this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: `Member ${newTeamMember.name} added` });
     this.resetOrganizationChart();
     if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
   }
@@ -102,7 +102,7 @@ export class OrganizationChartComponent implements OnInit {
     let isNew = this.formGroup.controls['isNew'].value;
 
     this.teamMemberService.editTeamMember(this.selectedId, name, personalVolume, parentId, isNew);
-    this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} actualizado` });
+    this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: `Member ${name} updated` });
     this.resetOrganizationChart();
     if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
   }
@@ -110,14 +110,14 @@ export class OrganizationChartComponent implements OnInit {
   deleteTeamMember(treeNode: TreeNode) {
     let name = treeNode.data.name;
     this.confirmationService.confirm({
-      message: `¿Está seguro de eliminar al miembro <b>${name}</b>?`,
-      header: 'Confirmación',
+      message: `Are you sure you want to delete the member <b>${name}</b>?`,
+      header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.teamMemberService.deleteTeamMember(treeNode);
         this.resetOrganizationChart();
         if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
-        this.messageService.add({ severity: 'success', summary: 'Confirmación', detail: `Miembro ${name} eliminado` });
+        this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: `Member ${name} deleted` });
       }
     });
   }

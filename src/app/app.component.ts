@@ -11,10 +11,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
-      { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/home'] },
-      { label: 'Equipo', icon: 'pi pi-fw pi-users', routerLink: ['/team'] },
-      { label: 'Simulaciones', icon: 'pi pi-fw pi-list', routerLink: ['/simulations'] },
-      { label: 'Configuración', icon: 'pi pi-fw pi-cog', routerLink: ['/settings'] }
+      { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: ['/home'] },
+      { label: 'Team', icon: 'pi pi-fw pi-users', routerLink: ['/team'] },
+      { label: 'Simulations', icon: 'pi pi-fw pi-list', routerLink: ['/simulations'] },
+      { label: 'Settings', icon: 'pi pi-fw pi-cog', routerLink: ['/settings'] }
     ];
   }
 }
