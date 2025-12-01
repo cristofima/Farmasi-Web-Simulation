@@ -221,4 +221,6 @@ python scripts/xlsx_to_csv.py activity_report.xlsx --all
 
 ## License
 
+This project is licensed under the [MIT License](LICENSE).
+
 This project is for educational and simulation purposes only. Not affiliated with Farmasi.
