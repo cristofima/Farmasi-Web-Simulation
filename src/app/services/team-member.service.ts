@@ -24,14 +24,13 @@ export class TeamMemberService {
     return teamMembers.find(x => x.id == id);
   }
 
-  editTeamMember(id: string, name: string, personalVolume: number, parentId?: string, isNew = false) {
+  editTeamMember(id: string, name: string, personalVolume: number, parentId?: string) {
     const teamMembers = this.getTeamMembers();
     const teamMember = teamMembers.find(x => x.id === id);
     if (teamMember) {
       teamMember.name = name;
       teamMember.personalVolume = personalVolume;
       teamMember.parentId = parentId;
-      teamMember.isNew = isNew;
 
       localStorage.setItem(this.storageKey, JSON.stringify(teamMembers));
     }

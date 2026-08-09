@@ -14,11 +14,18 @@ export class MonthlyBonusesComponent {
   selectedGeneration?: LeadershipGenerationDetail;
 
   @Input() title?: string;
+  leadershipBonusBreakdown: Array<{ generation: number; bonus: number }> = [];
 
-  @Input("monthlyBonus") set monthlyBonus(value: MonthlyBonusModel | undefined) {
+  @Input() set monthlyBonus(value: MonthlyBonusModel | undefined) {
     this.monthlyBonusModel = value;
     if (this.monthlyBonusModel) {
       this.totalBonus = BonusUtil.calculateTotalBonus(this.monthlyBonusModel);
+      this.leadershipBonusBreakdown = this.monthlyBonusModel.leadershipBonusArr
+        .map((bonus, index) => ({ generation: index + 1, bonus }))
+        .filter(item => item.bonus > 0);
+    } else {
+      this.totalBonus = 0;
+      this.leadershipBonusBreakdown = [];
     }
   }
 

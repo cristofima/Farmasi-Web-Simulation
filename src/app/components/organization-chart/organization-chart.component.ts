@@ -43,7 +43,6 @@ export class OrganizationChartComponent implements OnInit {
       name: new FormControl('', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(25)])),
       personalVolume: new FormControl(0, Validators.compose([Validators.required, Validators.min(0)])),
       parentId: new FormControl(null, Validators.compose([Validators.required])),
-      isNew: new FormControl(false)
     });
 
     this.resetOrganizationChart();
@@ -61,7 +60,6 @@ export class OrganizationChartComponent implements OnInit {
       id: Guid.newGuid().toString(),
       parentId: this.formGroup.controls['parentId'].value,
       name: this.formGroup.controls['name'].value,
-      isNew: this.formGroup.controls['isNew'].value,
       personalVolume: this.formGroup.controls['personalVolume'].value
     };
 
@@ -80,7 +78,6 @@ export class OrganizationChartComponent implements OnInit {
       name: treeNode.data.name,
       personalVolume: treeNode.data.pv,
       parentId: treeNode.data.parentId,
-      isNew: treeNode.data.isNew
     });
   }
 
@@ -99,9 +96,8 @@ export class OrganizationChartComponent implements OnInit {
     let name = this.formGroup.controls['name'].value;
     let personalVolume = this.formGroup.controls['personalVolume'].value;
     let parentId = this.formGroup.controls['parentId'].value;
-    let isNew = this.formGroup.controls['isNew'].value;
 
-    this.teamMemberService.editTeamMember(this.selectedId, name, personalVolume, parentId, isNew);
+    this.teamMemberService.editTeamMember(this.selectedId, name, personalVolume, parentId);
     this.messageService.add({ severity: 'success', summary: 'Confirmation', detail: `Member ${name} updated` });
     this.resetOrganizationChart();
     if (this.isSimulation) this.updateSimulationDetailsEvent.emit();
