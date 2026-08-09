@@ -1,43 +1,80 @@
-<p-confirmDialog [style]="{width: '30vw'}" rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+<p-confirmDialog
+  [style]="{ width: '30vw' }"
+  rejectButtonStyleClass="p-button-outlined"
+></p-confirmDialog>
 
 <div class="p-4">
   <div class="flex justify-content-center gap-2 mb-4">
-    <p-button (click)="showDialog()" label="Add member" icon="pi pi-plus"></p-button>
-    <p-button (click)="showImportDialog()" label="Import CSV" icon="pi pi-upload" styleClass="p-button-secondary"></p-button>
+    <p-button
+      (click)="showDialog()"
+      label="Add member"
+      icon="pi pi-plus"
+    ></p-button>
+    <p-button
+      (click)="showImportDialog()"
+      label="Import CSV"
+      icon="pi pi-upload"
+      styleClass="p-button-secondary"
+    ></p-button>
   </div>
 
-<!-- CSV Import Component -->
-<app-csv-import #csvImport (importCompleted)="onImportCompleted()"></app-csv-import>
-<div class="card">
-  <div class="flex flex-column md:flex-row gap-5">
-    <div class="flex-auto overflow-x-auto">
-      <p-organizationChart [value]="data">
-        <ng-template let-node pTemplate="person">
-          <div class="node-actions">
-            <button pButton icon="pi pi-folder" (click)="loadDetailsDialog(node)" title="View details"
-              class="p-button-rounded p-button-secondary p-button-sm"></button>
-            <button *ngIf="node.data.parentId" pButton icon="pi pi-pencil" (click)="loadEditDialog(node)" title="Edit"
-              class="p-button-rounded p-button-sm"></button>
-            <button *ngIf="node.data.parentId" pButton icon="pi pi-trash" (click)="deleteTeamMember(node)"
-              title="Delete" class="p-button-rounded p-button-danger p-button-sm"></button>
-          </div>
-          <div class="text-center">
-            <div class="font-bold">{{ node.data.name }}</div>
-            <div>{{ node.data.title }} {{ node.data.bonification }}%</div>
-            <p><b>VP:</b> {{ node.data.pv | number:'1.0-2' }}</p>
-            <p><b>VG:</b> {{ node.data.gv | number:'1.0-2' }}</p>
-          </div>
-        </ng-template>
-      </p-organizationChart>
+  <!-- CSV Import Component -->
+  <app-csv-import
+    #csvImport
+    (importCompleted)="onImportCompleted()"
+  ></app-csv-import>
+  <div class="card">
+    <div class="flex flex-column md:flex-row gap-5">
+      <div class="flex-auto overflow-x-auto">
+        <p-organizationChart [value]="data">
+          <ng-template let-node pTemplate="person">
+            <div class="node-actions">
+              <button
+                pButton
+                icon="pi pi-folder"
+                (click)="loadDetailsDialog(node)"
+                title="View details"
+                class="p-button-rounded p-button-secondary p-button-sm"
+              ></button>
+              <button
+                *ngIf="node.data.parentId"
+                pButton
+                icon="pi pi-pencil"
+                (click)="loadEditDialog(node)"
+                title="Edit"
+                class="p-button-rounded p-button-sm"
+              ></button>
+              <button
+                *ngIf="node.data.parentId"
+                pButton
+                icon="pi pi-trash"
+                (click)="deleteTeamMember(node)"
+                title="Delete"
+                class="p-button-rounded p-button-danger p-button-sm"
+              ></button>
+            </div>
+            <div class="text-center">
+              <div class="font-bold">{{ node.data.name }}</div>
+              <div>{{ node.data.title }} {{ node.data.bonification }}%</div>
+              <p><b>VP:</b> {{ node.data.pv | number: "1.0-2" }}</p>
+              <p><b>VG:</b> {{ node.data.gv | number: "1.0-2" }}</p>
+            </div>
+          </ng-template>
+        </p-organizationChart>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
 <p-scrollTop></p-scrollTop>
 
-<p-dialog header="{{isEdit ? 'Edit' : 'New'}} member" [(visible)]="visible" [style]="{width: '30vw'}"
-  [modal]="true" [draggable]="false">
+<p-dialog
+  header="{{ isEdit ? 'Edit' : 'New' }} member"
+  [(visible)]="visible"
+  [style]="{ width: '30vw' }"
+  [modal]="true"
+  [draggable]="false"
+>
   <form [formGroup]="formGroup">
     <div class="p-fluid">
       <div class="field">
@@ -53,11 +90,11 @@
           [showButtons]="true"
         >
         </p-inputNumber>
-        <label for="parentId">Miembro padre</label>
+        <label for="parentId">Parent member</label>
         <p-dropdown
           [options]="members"
           formControlName="parentId"
-          placeholder="Seleccionar"
+          placeholder="Select"
           id="parentId"
           [filter]="true"
           optionValue="id"
@@ -70,18 +107,35 @@
   </form>
 
   <ng-template pTemplate="footer">
-    <p-button (onClick)="isEdit ? editTeamMember() : addTeamMember()" label="Save"
-      [disabled]="!formGroup.valid"></p-button>
+    <p-button
+      (onClick)="isEdit ? editTeamMember() : addTeamMember()"
+      label="Save"
+      [disabled]="!formGroup.valid"
+    ></p-button>
   </ng-template>
 </p-dialog>
 
-<p-dialog header="Details of {{selectedTreeNode?.data?.name}}" [(visible)]="showDetailsDialog"
-  [style]="{width: '30vw'}" [modal]="true" [draggable]="false">
+<p-dialog
+  header="Details of {{ selectedTreeNode?.data?.name }}"
+  [(visible)]="showDetailsDialog"
+  [style]="{ width: '30vw' }"
+  [modal]="true"
+  [draggable]="false"
+>
   <div class="card flex flex-wrap gap-3 p-fluid">
-    <app-team-points *ngIf="selectedTreeNode" [personalVolume]="selectedTreeNode.data.pv"
-      [groupVolume]="selectedTreeNode.data.gv" [bonusPercentage]="selectedTreeNode.data.bonification"
-      [title]="selectedTreeNode.data.title" [sidePoints]="selectedTreeNode.data.sp"
-      [titlePoints]="selectedTreeNode.data.tp"></app-team-points>
-    <app-monthly-bonuses [monthlyBonus]="monthlyBonusModel" [title]="selectedTreeNode?.data?.title" *ngIf="monthlyBonusModel"></app-monthly-bonuses>
+    <app-team-points
+      *ngIf="selectedTreeNode"
+      [personalVolume]="selectedTreeNode.data.pv"
+      [groupVolume]="selectedTreeNode.data.gv"
+      [bonusPercentage]="selectedTreeNode.data.bonification"
+      [title]="selectedTreeNode.data.title"
+      [sidePoints]="selectedTreeNode.data.sp"
+      [titlePoints]="selectedTreeNode.data.tp"
+    ></app-team-points>
+    <app-monthly-bonuses
+      [monthlyBonus]="monthlyBonusModel"
+      [title]="selectedTreeNode?.data?.title"
+      *ngIf="monthlyBonusModel"
+    ></app-monthly-bonuses>
   </div>
 </p-dialog>

@@ -77,19 +77,6 @@ export class CsvImportService {
 
       result.rootMember = `${rootMember.firstName} ${rootMember.lastName}`;
 
-      // Check if member is new (registered in the current month)
-      const isNewMember = (signUpDate: string): boolean => {
-        if (!signUpDate) return false;
-        try {
-          const date = new Date(signUpDate);
-          const now = new Date();
-          const monthsAgo = (now.getFullYear() - date.getFullYear()) * 12 + (now.getMonth() - date.getMonth());
-          return monthsAgo <= 1; // Consider new if registered within last month
-        } catch {
-          return false;
-        }
-      };
-
       // Convert to TeamMemberModel array
       for (const csvRow of csvRows) {
         const isRoot = csvRow.consultantNo === rootMember.consultantNo;
@@ -97,8 +84,7 @@ export class CsvImportService {
           id: csvRow.consultantNo,
           name: `${csvRow.firstName} ${csvRow.lastName}`.trim(),
           personalVolume: csvRow.personalPointsThisMonth || 0,
-          parentId: isRoot ? undefined : csvRow.sponsorCode,
-          isNew: isNewMember(csvRow.signUpDate)
+          parentId: isRoot ? undefined : csvRow.sponsorCode
         };
 
         teamMembers.push(teamMember);
